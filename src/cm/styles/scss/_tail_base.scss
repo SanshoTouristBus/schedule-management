@@ -1,0 +1,138 @@
+@layer base {
+ :root {
+  --shadow-sm: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --shadow-none: 0 0 #0000;
+ }
+
+ /* スクロールバースタイル */
+ ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+ }
+ ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+ }
+ ::-webkit-scrollbar-thumb {
+  background: #bbbbbb;
+ }
+ ::-webkit-scrollbar-thumb:hover {
+  background: #4d4d4d;
+ }
+ html {
+  scroll-behavior: smooth !important;
+ }
+
+ // 基本的なフォーム要素のスタイル
+ //  input,
+ // select {
+ //  &:hover {
+ //   cursor: text;
+ //  }
+ //  font-size: 16px !important;
+ // }
+
+ // チェックボックスのスタイル input[type="checkbox"] {
+ //  accent-color: #4b5563;
+ // }
+
+ // 数値入力フィールドのスピナー制御 input[type="number"] {
+ //  -moz-appearance: textfield;
+ //  &::-webkit-inner-spin-button,
+ //  &::-webkit-outer-spin-button {
+ //   -webkit-appearance: none;
+ //   margin: 0;
+ //  }
+
+ //  // withSpinクラスがある場合はスピナーを表示
+ //  &.withSpin {
+ //   -moz-appearance: number-input;
+ //   &::-webkit-inner-spin-button,
+ //   &::-webkit-outer-spin-button {
+ //    -webkit-appearance: auto;
+ //   }
+ //  }
+ // }
+
+ // canvas {
+ //  touch-action: none; /* タッチジェスチャーを無効化して独自処理を優先 */
+ //  cursor: grab; /* デフォルトのパンカーソル */
+ // }
+ // canvas:active {
+ //  cursor: grabbing; /* パン中のカーソル */
+ // }
+
+ // @media print {
+ //  .no-print {
+ //   display: none;
+ //  }
+ // }
+
+ // hr {
+ //  border-color: var(--color-gray-400);
+ // }
+
+ // *:not([class]):not([id]):not([style]) > svg:not([id]) {
+ //  width: 1rem;
+ // }
+
+ // h1,
+ // h2,
+ // h3 {
+ //  font-weight: bold;
+ //  margin-top: 0.25rem;
+ //  margin-bottom: 0.25rem;
+ //  font-size: 1.125rem;
+ // }
+
+ // h4,
+ // h5,
+ // h6 {
+ //  font-weight: bold;
+ // }
+
+ // strong {
+ //  font-size: 16px;
+ // }
+
+ // * {
+ //  break-after: break-word;
+
+ //  &:not(input, select) {
+ //   &:focus {
+ //    outline: none;
+ //   }
+ //  }
+ //  box-sizing: border-box;
+ //  outline: none;
+ // }
+
+ // body,
+ // table {
+ //  overscroll-behavior-y: none;
+ //  color: var(--color-sub-main);
+ // }
+
+ // .bg-image {
+ //  body::before {
+ //   position: fixed;
+ //   top: 0;
+ //   left: 0;
+ //   z-index: -1;
+ //   width: 100vw;
+ //   height: 100vh;
+
+ //   -webkit-background-size: contain;
+ //   background-size: contain;
+ //   content: "";
+ //  }
+ // }
+ * {
+  border-color: var(--color-border-gray);
+  --tw-ring-color: var(--color-ring-gray);
+ }
+}

@@ -1,0 +1,22 @@
+-- SELECT DISTINCT
+--  "genbaDayId"
+-- FROM
+--  "GenbaDayRemainingTask"
+-- WHERE
+--  "genbaDayId" IS NOT NULL
+--  AND "genbaDayId" NOT IN (
+--   SELECT
+--    "id"
+--   FROM
+--    "GenbaDay"
+--  );
+
+-- DELETE FROM "GenbaDayRemainingTask"
+-- WHERE
+--  "genbaDayId" IS NOT NULL
+--  AND "genbaDayId" NOT IN (
+--   SELECT
+--    "id"
+--   FROM
+--    "GenbaDay"
+--  );

@@ -1,0 +1,38 @@
+@keyframes slideUp {
+ from {
+  transform: translateY(100%);
+  opacity: 0;
+ }
+ to {
+  transform: translateY(0);
+  opacity: 1;
+ }
+}
+
+.slide-up {
+ animation: slideUp 0.5s ease-out forwards;
+}
+
+@keyframes slideUpWithBounce {
+ from {
+  transform: translateY(100%);
+  opacity: 0;
+ }
+ to {
+  transform: translateY(0);
+  opacity: 1;
+ }
+ 60% {
+  transform: translateY(-10%);
+ }
+ 80% {
+  transform: translateY(5%);
+ }
+ 100% {
+  transform: translateY(0);
+ }
+}
+
+.slide-up-bounce {
+ animation: slideUpWithBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}

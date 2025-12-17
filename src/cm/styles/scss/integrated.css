@@ -1,0 +1,855 @@
+@charset "UTF-8";
+:root {
+  color: oklch(0.32 0 0);
+  --color-border-gray: oklch(0.8 0.032 261.325);
+  --color-background: oklch(1 0 0);
+  --color-primary-main: #486f55;
+  --color-primary-light: #bdd4a2;
+  --color-primary-text: white;
+  --color-primary: 222 100% 60%; /* fallback HSL */
+  --color-primary-foreground: 0 0% 100%;
+  --color-kaizen-cool-main: #175793;
+  --color-kaizen-cool-light: #ebf5fb;
+  --color-kaizen-warm-main: #c28f0e;
+  --color-kaizen-warm-light: #fffacf;
+  --color-white: oklch(1 0 0);
+  --color-blue-main: oklch(0.6 0.1117 249.3);
+  --color-blue-light: oklch(0.85 0.07 250);
+  --color-green-main: oklch(0.5 0.2 125);
+  --color-green-light: oklch(0.95 0.05 145);
+  --color-sub-main: oklch(0.39 0.01 100);
+  --color-sub-light: oklch(0.95 0.01 80);
+  --color-error-main: oklch(0.5 0.3 45);
+  --color-error-light: oklch(0.85 0.1 25);
+  --color-orange-main: oklch(0.65 0.2 60);
+  --color-orange-light: oklch(0.9 0.07 50);
+  --color-yellow-main: oklch(0.75 0.2 90);
+  --color-yellow-light: oklch(0.95 0.08 85);
+  --color-control-bg: oklch(0.94 0 0);
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+.dark {
+  --color-background: oklch(0.71 0 17.19);
+  --color-primary-text: black;
+}
+
+@theme {
+  --color-border-gray: var(--color-border-gray);
+  --color-background: var(--color-background);
+  --color-primary-main: var(--color-primary-main);
+  --color-primary-light: var(--color-primary-light);
+  --color-primary-text: var(--color-primary-text);
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-kaizen-cool-main: var(--color-kaizen-cool-main);
+  --color-kaizen-cool-light: var(--color-kaizen-cool-light);
+  --color-kaizen-warm-main: var(--color-kaizen-warm-main);
+  --color-kaizen-warm-light: var(--color-kaizen-warm-light);
+  --color-white: var(--color-white);
+  --color-blue-main: var(--color-blue-main);
+  --color-blue-light: var(--color-blue-light);
+  --color-green-main: var(--color-green-main);
+  --color-green-light: var(--color-green-light);
+  --color-sub-main: var(--color-sub-main);
+  --color-sub-light: var(--color-sub-light);
+  --color-error-main: var(--color-error-main);
+  --color-error-light: var(--color-error-light);
+  --color-orange-main: var(--color-orange-main);
+  --color-orange-light: var(--color-orange-light);
+  --color-yellow-main: var(--color-yellow-main);
+  --color-yellow-light: var(--color-yellow-light);
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+@layer base {
+  :root {
+    --shadow-sm: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    --shadow-none: 0 0 #0000;
+  }
+  /* スクロールバースタイル */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #bbbbbb;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4d4d4d;
+  }
+  html {
+    scroll-behavior: smooth !important;
+  }
+  * {
+    border-color: var(--color-border-gray);
+    --tw-ring-color: var(--color-ring-gray);
+  }
+}
+@layer components {
+  .myRadio label {
+    cursor: pointer;
+    position: relative;
+    margin-left: 10px;
+    padding-left: 50px;
+  }
+  .myRadio label::before,
+  .myRadio label::after {
+    background-color: #ddd;
+    border-radius: 50%;
+    transition: 0.3s;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 0px;
+  }
+  .myRadio label::before {
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    height: 20px;
+    width: 40px;
+    left: 5px;
+  }
+  .myRadio label::after {
+    background-color: #ddd;
+    border-radius: 50%;
+    opacity: 1;
+    height: 22px;
+    width: 22px;
+    left: 0px;
+  }
+  .myRadio input:checked + label::before {
+    background-color: var(--color-primary-main);
+  }
+  .myRadio input:checked + label::after {
+    left: 27px;
+  }
+  .control-border {
+    border-width: 1px;
+    border-radius: var(--radius-md);
+    border-color: var(--color-gray-300);
+    padding-left: 0.5rem;
+    min-width: 100px;
+  }
+  .myFormControl {
+    display: block;
+    width: 100%;
+    background-color: var(--color-);
+    padding-top: 0.3rem; /* p-1 */
+    padding-bottom: 0.3rem;
+    padding-left: 0.5rem; /* px-2 */
+    padding-right: 0.5rem;
+    border-width: 1px;
+    border-radius: var(--radius-md);
+    border-color: var(--color-gray-300);
+    line-height: 1.5rem; /* smの行間も合わせるなら */
+    font-size: 18px !important;
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+  .myFormControl:hover {
+    cursor: text;
+    border-color: var(--color-blue-600) !important;
+    box-shadow: var(--shadow-md);
+  }
+  .myFormControl:disabled {
+    border: none;
+    background-color: var(--color-gray-200) !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .table-wrapper {
+    padding: 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-gray);
+    overflow: auto;
+    white-space: normal;
+    border: 1px solid var(--color-gray-300);
+  }
+  .table-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .table-wrapper table thead,
+  .table-wrapper table tfoot {
+    position: sticky;
+    top: 0;
+  }
+  .table-wrapper table td {
+    border-bottom-width: 0.5px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-color: var(--color-gray-400);
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .table-wrapper table th {
+    border-bottom-width: 0.5px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-color: var(--color-gray-400);
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: var(--color-gray-600);
+    font-weight: bolder;
+    text-align: start;
+  }
+  .table-wrapper table thead {
+    z-index: 20 !important;
+  }
+  .table-wrapper table thead tr:first-child th:first-child {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 30;
+  }
+  .table-wrapper table thead th,
+  .table-wrapper table thead td {
+    z-index: 100;
+    background-color: #f8f8f8;
+    color: var(--color-gray-800);
+    border-color: var(--color-gray-500);
+    border-bottom-width: 1px;
+    border-left-width: 0 !important;
+    border-right-width: 0 !important;
+  }
+  .table-wrapper table tbody tr th,
+  .table-wrapper table tbody tr td:first-child {
+    background-color: white;
+    position: sticky;
+    z-index: 10;
+    left: 0;
+  }
+  tr .table-wrapper table tbody:last-child td {
+    border-bottom-width: 0px;
+  }
+  tr .table-wrapper table tbody:last-child th {
+    border-bottom-width: 0px;
+  }
+  .table-wrapper table tfoot {
+    z-index: 100;
+    position: sticky;
+    bottom: 0;
+  }
+  .t-paper {
+    background-color: var(--color-background);
+    border-radius: var(--radius-lg);
+    border-width: 0.5px;
+    border-color: var(--color-gray-200);
+    padding: 0.75rem;
+    box-shadow: var(--shadow-md);
+  }
+  .col-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .row-stack {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .row-stack.breadcrumbs span:not(:last-child)::after {
+    content: " >";
+  }
+  .disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+  .t-btn {
+    color: white;
+    background-color: var(--color-sub-main);
+    border-radius: var(--radius-sm);
+    width: -moz-fit-content;
+    width: fit-content;
+    cursor: pointer;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+  .t-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+  .t-btn:hover {
+    opacity: 0.5;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.4), 0 0 50px rgba(128, 128, 128, 0.1);
+    border-color: transparent;
+  }
+  .icon-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.125rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    cursor: pointer;
+    background-color: var(--color-gray-100);
+    font-size: var(--font-size-sm);
+    color: var(--color-sub-main);
+    border-radius: 0.125rem;
+    font-weight: var(--font-weight-bold);
+    box-shadow: var(--shadow-md);
+  }
+  .t-link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    color: rgb(36, 142, 255);
+    cursor: pointer;
+  }
+  .onHover {
+    cursor: pointer;
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 200ms;
+    transition-property: all;
+  }
+  .onHover:hover {
+    opacity: 0.5;
+  }
+  .vertical {
+    writing-mode: vertical-lr;
+    text-align: center;
+  }
+  .absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .center-x {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .center-y {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .center-x-y {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .qr-sheet table {
+    border: 1px solid var(--color-sub-main);
+    white-space: normal;
+  }
+  .qr-sheet table td:nth-child(odd) {
+    background-color: var(--color-sub-light);
+  }
+  .recharts-tooltip-wrapper {
+    background-color: var(--color-gray-50);
+    box-shadow: var(--shadow-lg);
+  }
+  .react-markdown h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .react-markdown h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .react-markdown h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+  .react-markdown ol li {
+    list-style-type: decimal;
+  }
+  .react-markdown ul li {
+    list-style-type: disc;
+  }
+  .react-markdown li {
+    margin-left: 40px;
+  }
+  .react-markdown a {
+    text-underline-offset: 4px;
+    color: rgb(36, 142, 255);
+    cursor: pointer;
+  }
+  .drawer {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    width: 80vw;
+    max-width: 300px;
+    height: 100vh;
+    overflow-x: hidden;
+    transition: left 0.2s ease-in-out;
+    z-index: 9999;
+  }
+  .drawer.open {
+    left: 0;
+  }
+}
+@layer utilities {
+  .gradient-base {
+    background: linear-gradient(135deg, var(--color-gray-200), var(--color-gray-50)) !important;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 1rem;
+  }
+  small {
+    color: var(--color-gray-500);
+  }
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.slide-up {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+@keyframes slideUpWithBounce {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(-10%);
+  }
+  80% {
+    transform: translateY(5%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.slide-up-bounce {
+  animation: slideUpWithBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@media print {
+  .page-break {
+    page-break-before: always;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .print-target {
+    margin: 10px auto;
+    padding: 10px;
+  }
+  .print-target,
+  .print-target * {
+    @apply shadow-none;
+    visibility: visible;
+    page-break-inside: avoid;
+  }
+  .print-target {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+/* UcarQrSheet専用スタイル */
+.ucar-qr-sheet {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* 印刷時に非表示にする要素 */
+.no-print {
+  display: block;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+/* QRシートコンテナ */
+.qr-sheet-container {
+  max-width: none;
+  margin: 0;
+}
+
+/* ページ共通スタイル */
+.qr-sheet-page {
+  width: 297mm; /* A4横 */
+  height: 210mm; /* A4縦 */
+  margin: 0 auto 20px auto;
+  padding: 10mm;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  page-break-after: always;
+  page-break-inside: avoid;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+@media print {
+  .qr-sheet-page {
+    width: 100% !important;
+    max-width: none !important;
+    height: 100vh;
+    margin: 0 !important;
+    padding: 5mm !important;
+    box-shadow: none;
+    page-break-after: always;
+    page-break-inside: avoid;
+    box-sizing: border-box !important;
+  }
+}
+/* ページ1: 車両情報 + QRコード */
+.page-1 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.car-info-section {
+  flex: 1;
+}
+
+.car-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #333;
+}
+
+.car-info-table td {
+  border: 1px solid #333;
+  padding: 4px 8px;
+  vertical-align: middle;
+  height: 25px;
+}
+
+.car-info-table .label-cell {
+  background-color: #666;
+  color: white;
+  font-weight: bold;
+  width: 120px;
+  text-align: center;
+}
+
+.car-info-table .value-cell {
+  background-color: white;
+  color: black;
+  min-width: 120px;
+}
+
+/* QRコードセクション */
+.qr-codes-section {
+  margin-top: 20px;
+}
+
+.qr-codes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.qr-code-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+}
+
+.qr-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.qr-image {
+  width: 180px;
+  height: 180px;
+  border: 1px solid #ccc;
+}
+
+/* ページ2: 2カラムレイアウト */
+.page-2 {
+  /* ページ2は特別な設定なし、デフォルトのpage設定を使用 */
+}
+
+.page-2-content {
+  display: flex;
+  gap: 20px;
+  height: 100%;
+}
+
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.right-section {
+  flex: 1;
+}
+
+/* 手書き情報セクション */
+.writable-info-section {
+  margin-bottom: 15px;
+}
+
+.writable-info-grid {
+  display: flex;
+  gap: 20px;
+}
+
+.info-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.writable-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.writable-table td {
+  border: 1px solid #333;
+  padding: 4px 8px;
+  height: 25px;
+}
+
+.writable-table .label-cell {
+  background-color: #666;
+  color: white;
+  font-weight: bold;
+  width: 80px;
+  text-align: center;
+}
+
+.writable-table .writable-cell {
+  background-color: white;
+  color: black;
+  width: 120px;
+}
+
+/* 車両情報コンパクト版 */
+.car-info-compact {
+  margin: 15px 0;
+}
+
+.car-info-table.compact {
+  font-size: 10px;
+}
+
+.car-info-table.compact td {
+  padding: 2px 4px;
+  height: 20px;
+}
+
+.car-info-table.compact .label-cell {
+  width: 80px;
+  font-size: 9px;
+}
+
+.car-info-table.compact .value-cell {
+  min-width: 80px;
+}
+
+/* ページ2のQRコード */
+.qr-codes-section-page2 {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.qr-codes-section-page2 .qr-code-item {
+  padding: 5px;
+}
+
+.qr-codes-section-page2 .qr-image {
+  width: 60px;
+  height: 60px;
+}
+
+/* チェックリストテーブル */
+.checklist-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+
+.checklist-table td {
+  border: 1px solid #333;
+  padding: 2px 4px;
+  vertical-align: middle;
+  height: 18px;
+}
+
+.group-cell {
+  width: 80px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #f5f5f5;
+}
+
+.item-cell {
+  width: 200px;
+  padding-left: 8px;
+}
+
+.checkbox-cell {
+  width: 30px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* react-to-print用の印刷スタイル */
+.print-target {
+  font-family: "Nasu-Regular", sans-serif;
+}
+
+/* 印刷時の調整 */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .print-target {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .qr-sheet-page {
+    page-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+         break-inside: avoid;
+  }
+  .page-1 {
+    page-break-after: always;
+    -moz-column-break-after: page;
+         break-after: page;
+  }
+  .page-2 {
+    page-break-before: always;
+    -moz-column-break-before: page;
+         break-before: page;
+  }
+  /* テーブルの幅を最大限活用 */
+  .car-info-table {
+    width: 100% !important;
+    font-size: 11px;
+  }
+  .checklist-table {
+    width: 100% !important;
+    font-size: 9px;
+  }
+  .writable-table {
+    width: 100% !important;
+  }
+  /* QRコードセクションの調整 */
+  .qr-codes-grid {
+    width: 100% !important;
+    justify-content: space-evenly !important;
+  }
+  .page-2-content {
+    width: 100% !important;
+    gap: 10px !important;
+  }
+  .left-section,
+  .right-section {
+    width: 48% !important;
+  }
+  .qr-label {
+    font-size: 12px;
+  }
+  /* 印刷時に非表示 */
+  .no-print {
+    display: none !important;
+  }
+}
+/* 画面表示時の調整 */
+@media screen {
+  .qr-sheet-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+  }
+  .qr-sheet-page {
+    margin-bottom: 30px;
+  }
+}
+/* レスポンシブ対応 */
+@media screen and (max-width: 1200px) {
+  .qr-sheet-page {
+    width: 95%;
+    padding: 15px;
+  }
+  .page-2-content {
+    flex-direction: column;
+  }
+  .left-section,
+  .right-section {
+    flex: none;
+  }
+  .writable-info-grid {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .qr-codes-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  .qr-code-item {
+    margin-bottom: 15px;
+  }
+}/*# sourceMappingURL=integrated.css.map */

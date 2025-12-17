@@ -1,0 +1,25 @@
+.rating {
+  display: flex;
+}
+
+.star {
+  color: #ccc;
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+.star.full {
+  color: #ffd700;
+}
+
+.star.half {
+  color: #ffd700;
+  position: relative;
+}
+
+.star.half::after {
+  content: '☆';
+  position: absolute;
+  color: #ccc;
+  clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%);
+}

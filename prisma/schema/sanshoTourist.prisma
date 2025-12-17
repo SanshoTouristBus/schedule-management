@@ -1,0 +1,163 @@
+// 観光バス予約管理システム (SanshoTourist)
+
+// 車両マスタ
+model StVehicle {
+ id        Int       @id @default(autoincrement())
+ createdAt DateTime  @default(now())
+ updatedAt DateTime? @default(now()) @updatedAt()
+ sortOrder Float     @default(0)
+
+ plateNumber String  @unique // プレートNo. (例: 湘南230あ3409)
+ type        String? // 車種 (例: 大型, 中型, マイクロ)
+ seats       Int     @default(0) // 正席数
+ subSeats    Int     @default(0) // 補助席数
+ phone       String? // 車両携帯番号
+
+ active Boolean @default(true) // 有効フラグ
+
+ StSchedule StSchedule[]
+}
+
+// 会社マスタ
+model StCustomer {
+ id        Int       @id @default(autoincrement())
+ createdAt DateTime  @default(now())
+ updatedAt DateTime? @default(now()) @updatedAt()
+ sortOrder Float     @default(0)
+
+ name String // 会社名
+
+ active Boolean @default(true) // 有効フラグ
+
+ StContact  StContact[]
+ StSchedule StSchedule[]
+}
+
+// 担当者マスタ
+model StContact {
+ id        Int       @id @default(autoincrement())
+ createdAt DateTime  @default(now())
+ updatedAt DateTime? @default(now()) @updatedAt()
+ sortOrder Float     @default(0)
+
+ name  String // 担当者名
+ phone String? // 電話番号
+
+ active Boolean @default(true) // 有効フラグ
+
+ StCustomer   StCustomer @relation(fields: [stCustomerId], references: [id], onDelete: Cascade)
+ stCustomerId Int
+
+ StSchedule StSchedule[]
+}
+
+// 祝日マスタ
+model StHoliday {
+ id        Int       @id @default(autoincrement())
+ createdAt DateTime  @default(now())
+ updatedAt DateTime? @default(now()) @updatedAt()
+ sortOrder Float     @default(0)
+
+ date DateTime // 日付 (UTC 00:00:00)
+ name String // 祝日名
+
+ @@unique([date], name: "unique_stHoliday_date")
+}
+
+// スケジュール
+model StSchedule {
+ id        Int       @id @default(autoincrement())
+ createdAt DateTime  @default(now())
+ updatedAt DateTime? @default(now()) @updatedAt()
+ sortOrder Float     @default(0)
+
+ date DateTime // 運行日 (UTC 00:00:00)
+
+ // 顧客情報 (マスタ参照)
+ StCustomer   StCustomer? @relation(fields: [stCustomerId], references: [id], onDelete: SetNull)
+ stCustomerId Int?
+
+ StContact   StContact? @relation(fields: [stContactId], references: [id], onDelete: SetNull)
+ stContactId Int?
+
+ // 車両情報 (マスタ参照)
+ StVehicle   StVehicle? @relation(fields: [stVehicleId], references: [id], onDelete: SetNull)
+ stVehicleId Int?
+
+ // 手入力項目
+ organizationName    String? // 団体名
+ organizationContact String? // 担当者名 (手入力)
+ destination         String? // 行き先
+ hasGuide            Boolean @default(false) // ガイドの有無
+ departureTime       String? // 出庫時間 (HH:mm)
+ returnTime          String? // 帰庫時間 (HH:mm)
+ remarks             String? // 備考
+
+ // 添付ファイル
+ pdfFileName String? // 運行指示書ファイル名
+ pdfFileUrl  String? // 運行指示書ファイルURL
+
+ // 一括登録用
+ batchId String? // 一括登録ID (同じバッチで作成されたものを識別)
+
+ // 論理削除
+ deleted   Boolean   @default(false)
+ deletedAt DateTime?
+
+ // 乗務員 (中間テーブル)
+ StScheduleDriver StScheduleDriver[]
+}
+
+// スケジュール-乗務員 中間テーブル
+model StScheduleDriver {
+ id        Int       @id @default(autoincrement())
+ createdAt DateTime  @default(now())
+ updatedAt DateTime? @default(now()) @updatedAt()
+ sortOrder Float     @default(0)
+
+ StSchedule   StSchedule @relation(fields: [stScheduleId], references: [id], onDelete: Cascade)
+ stScheduleId Int
+
+ userId Int // User.id への参照 (外部キー制約なし、アプリレベルで管理)
+
+ @@unique([stScheduleId, userId], name: "unique_stScheduleDriver")
+}
+
+// 点呼者
+model StRollCaller {
+ id        Int       @id @default(autoincrement())
+ createdAt DateTime  @default(now())
+ updatedAt DateTime? @default(now()) @updatedAt()
+ sortOrder Float     @default(0)
+
+ date   DateTime // 日付 (UTC 00:00:00)
+ userId Int // User.id への参照 (外部キー制約なし)
+
+ @@unique([date], name: "unique_stRollCaller_date")
+}
+
+// 公開範囲設定
+model StPublishSetting {
+ id        Int       @id @default(autoincrement())
+ createdAt DateTime  @default(now())
+ updatedAt DateTime? @default(now()) @updatedAt()
+ sortOrder Float     @default(0)
+
+ publishEndDate DateTime? // この日付より先のスケジュールは管理者以外非表示
+}
+
+// ユーザーごとの休日設定
+model StUserHoliday {
+ id        Int       @id @default(autoincrement())
+ createdAt DateTime  @default(now())
+ updatedAt DateTime? @default(now()) @updatedAt()
+ sortOrder Float     @default(0)
+
+ date   DateTime // 日付 (UTC 00:00:00)
+ userId Int // User.id への参照 (外部キー制約なし、アプリレベルで管理)
+
+ @@unique([userId, date], name: "unique_stUserHoliday_userId_date")
+}
+
+// 乗務員はUserテーブルを利用 (apps配列に'sanshoTourist'を持つユーザーが乗務員)
+// StDriverテーブルは使用しない

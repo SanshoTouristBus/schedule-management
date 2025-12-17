@@ -1,0 +1,92 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# /public/data/production*
+｀
+# production
+/build
+
+# 環境変数ファイル（すべてのバリエーション）
+.env
+.env*.local
+.env.production
+.env.development
+.env.test
+.env*.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# prisma
+/prisma/generated
+
+# PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
+
+
+# dumpfileは送らないようにしたい
+*.dump
+certificates
+
+# ユーザーがアップロードしたファイル（機密情報を含む可能性）
+/public/uploads/
+/public/uploads/**/*
+
+# 一時ファイル・メモファイル
+*.txt
+!package.json
+!tsconfig.json
+!README.md
+!LICENSE.txt
+gmail_draft.txt
+CLAUDE.local.md
+*.local.md
+*.backup
+*.bak
+
+# 生成ファイル
+schema.json
+*.log
+*.log.*
+
+# OS固有ファイル
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE固有ファイル
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# セッション・認証情報
+*.session
+*.key
+*.pem
+*.crt
+*.cert
+
+
+# 機密情報を含むスクリプト
+scripts/includeSearchDirectory.js

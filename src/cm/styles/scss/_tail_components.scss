@@ -1,0 +1,430 @@
+@layer components {
+ .myRadio {
+  label {
+   cursor: pointer;
+   position: relative;
+   margin-left: 10px;
+   padding-left: 50px;
+  }
+
+  label::before,
+  label::after {
+   background-color: #ddd;
+   border-radius: 50%;
+   transition: 0.3s;
+   transform: translateY(-50%);
+   top: 50%;
+   left: 0px;
+  }
+
+  label::before {
+   background-color: #fff;
+   border-radius: 10px;
+   border: 1px solid #ddd;
+   height: 20px;
+   width: 40px;
+   left: 5px;
+  }
+
+  label::after {
+   background-color: #ddd;
+   border-radius: 50%;
+   opacity: 1;
+   height: 22px;
+   width: 22px;
+   left: 0px;
+  }
+
+  input:checked + label::before {
+   background-color: var(--color-primary-main);
+  }
+
+  input:checked + label::after {
+   left: 27px;
+  }
+ }
+
+ .control-border {
+  border-width: 1px;
+  border-radius: var(--radius-md);
+  border-color: var(--color-gray-300);
+  padding-left: 0.5rem;
+  min-width: 100px;
+ }
+ .myFormControl {
+  display: block;
+  width: 100%;
+  background-color: var(--color-);
+  padding-top: 0.3rem; /* p-1 */
+  padding-bottom: 0.3rem;
+  padding-left: 0.5rem; /* px-2 */
+  padding-right: 0.5rem;
+  border-width: 1px;
+  border-radius: var(--radius-md);
+  border-color: var(--color-gray-300);
+  line-height: 1.5rem; /* smの行間も合わせるなら */
+  font-size: 18px !important;
+  transition-property: all;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+
+  // &:required {
+  //  &:placeholder-shown {
+  //   background-color: var(--color-red-100) !important;
+  //   border-color: var(--color-red-500) !important;
+  //  }
+  // }
+
+  &:hover {
+   cursor: text;
+   border-color: var(--color-blue-600) !important;
+   box-shadow: var(--shadow-md);
+  }
+  &:focus {
+   // border-color: var(--color-blue-600) !important;
+   // background-color: var(--color-blue-50) !important;
+   // border: none;
+  }
+
+  &:disabled {
+   border: none;
+   background-color: var(--color-gray-200) !important;
+   cursor: not-allowed;
+   opacity: 0.7;
+  }
+ }
+
+ // テーブル
+ .table-wrapper {
+  padding: 0;
+
+  border-radius: var(--radius-md);
+  // border: 1px solid var(--color-border-gray);
+  // ボーダー関係
+
+  overflow: auto;
+  white-space: normal;
+  border: 1px solid var(--color-gray-300);
+
+  table {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 15px;
+
+   thead,
+   tfoot {
+    position: sticky;
+    top: 0;
+   }
+
+   td {
+    border-bottom-width: 0.5px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-color: var(--color-gray-400);
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+   }
+
+   th {
+    border-bottom-width: 0.5px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-color: var(--color-gray-400);
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: var(--color-gray-600);
+    font-weight: bolder;
+    text-align: start;
+   }
+
+   thead {
+    z-index: 20 !important;
+
+    tr:first-child {
+     th:first-child {
+      position: sticky;
+      top: 0;
+      left: 0;
+      z-index: 30;
+     }
+    }
+    th,
+    td {
+     z-index: 100;
+     background-color: #f8f8f8;
+     color: var(--color-gray-800);
+     border-color: var(--color-gray-500);
+     border-bottom-width: 1px;
+     border-left-width: 0 !important;
+     border-right-width: 0 !important;
+    }
+   }
+
+   tbody {
+    // 左端のtd, thを固定
+    tr {
+     th,
+     td:first-child {
+      background-color: white;
+      position: sticky;
+
+      z-index: 10; // 固定列のz-indexを上げる
+      left: 0;
+     }
+    }
+
+    // 最終行のボーダーを削除
+    tr &:last-child {
+     td {
+      border-bottom-width: 0px;
+     }
+     th {
+      border-bottom-width: 0px;
+     }
+    }
+   }
+
+   tfoot {
+    z-index: 100;
+    position: sticky;
+    bottom: 0;
+   }
+  }
+ }
+
+ .t-paper {
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  border-width: 0.5px;
+  border-color: var(--color-gray-200);
+  padding: 0.75rem;
+  box-shadow: var(--shadow-md);
+ }
+
+ .col-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+ }
+
+ .row-stack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  &.breadcrumbs {
+   span:not(:last-child) {
+    &::after {
+     content: " >";
+    }
+   }
+  }
+ }
+
+ .disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  pointer-events: none;
+ }
+
+ button {
+  &:disabled {
+   cursor: not-allowed;
+   opacity: 0.3;
+  }
+ }
+
+ .t-btn {
+  color: white;
+  background-color: var(--color-sub-main);
+  border-radius: var(--radius-sm);
+  width: fit-content;
+  cursor: pointer;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-duration: 200ms;
+
+  &:disabled {
+   cursor: not-allowed;
+   opacity: 0.3;
+  }
+
+  &:hover {
+   opacity: 0.5;
+   box-shadow:
+    0 1px 10px rgba(0, 0, 0, 0.4),
+    0 0 50px rgba(128, 128, 128, 0.1);
+   border-color: transparent;
+  }
+ }
+
+ .icon-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.125rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  cursor: pointer;
+  background-color: var(--color-gray-100);
+  font-size: var(--font-size-sm);
+  color: var(--color-sub-main);
+  border-radius: 0.125rem;
+  font-weight: var(--font-weight-bold);
+  box-shadow: var(--shadow-md);
+ }
+
+ .t-link {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: rgb(36, 142, 255);
+  cursor: pointer;
+ }
+
+ .onHover {
+  cursor: pointer;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-duration: 200ms;
+  transition-property: all;
+  &:hover {
+   opacity: 0.5;
+  }
+ }
+
+ .vertical {
+  writing-mode: vertical-lr;
+  text-align: center;
+ }
+
+ .absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+ }
+
+ .center-x {
+  left: 50%;
+  transform: translateX(-50%);
+ }
+ .center-y {
+  top: 50%;
+  transform: translateY(-50%);
+ }
+
+ .center-x-y {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+ }
+
+ //QRシート
+ .qr-sheet {
+  table {
+   border: 1px solid var(--color-sub-main);
+   white-space: normal;
+   td:nth-child(odd) {
+    background-color: var(--color-sub-light);
+   }
+  }
+ }
+
+ // リチャーツ
+ .recharts-tooltip-wrapper {
+  background-color: var(--color-gray-50);
+  box-shadow: var(--shadow-lg);
+ }
+
+ //リアクトマークダウン
+ .react-markdown {
+  h1 {
+   font-size: 1.5rem;
+   font-weight: 700;
+  }
+  h2 {
+   font-size: 1.25rem;
+   font-weight: 700;
+  }
+  h3 {
+   font-size: 1.125rem;
+   font-weight: 700;
+  }
+  ol li {
+   list-style-type: decimal;
+  }
+  ul li {
+   list-style-type: disc;
+  }
+  li {
+   margin-left: 40px;
+  }
+  a {
+   text-underline-offset: 4px;
+   color: rgb(36, 142, 255);
+   cursor: pointer;
+  }
+ }
+
+ // ドロワーアニメーション
+ .drawer {
+  position: fixed;
+  left: -100%;
+  top: 0;
+  width: 80vw;
+  max-width: 300px;
+  height: 100vh;
+  overflow-x: hidden;
+  transition: left 0.2s ease-in-out;
+  z-index: 9999;
+  &.open {
+   left: 0;
+  }
+ }
+
+ // .t-alert {
+ //  padding: 0.4rem;
+ //  border-radius: var(--radius-md);
+ //  box-shadow: var(--shadow-DEFAULT);
+ // }
+ // .t-alert-primary {
+ //  padding: 0.25rem;
+ //  border-radius: 0.25rem;
+ //  background-color: var(--color-primary-light);
+ //  border-color: var(--color-primary-main);
+ //  box-shadow: var(--shadow-DEFAULT);
+ // }
+ // .t-alert-success {
+ //  padding: 0.25rem;
+ //  border-radius: 0.25rem;
+ //  background-color: var(--color-success-light);
+ //  border-color: var(--color-success-main);
+ //  box-shadow: var(--shadow-DEFAULT);
+ // }
+ // .t-alert-warning {
+ //  padding: 0.25rem;
+ //  border-radius: 0.25rem;
+ //  background-color: var(--color-warning-light);
+ //  border-color: var(--color-warning-main);
+ //  box-shadow: var(--shadow-DEFAULT);
+ // }
+ // .t-alert-blue {
+ //  padding: 0.25rem;
+ //  border-radius: 0.25rem;
+ //  background-color: var(--color-blue-50);
+ //  border-color: var(--color-blue-main);
+ //  box-shadow: var(--shadow-DEFAULT);
+ // }
+ // .t-alert-sub {
+ //  padding: 0.25rem;
+ //  border-radius: 0.25rem;
+ //  background-color: var(--color-gray-100);
+ //  border-color: var(--color-sub-main);
+ //  box-shadow: var(--shadow-DEFAULT);
+ // }
+}

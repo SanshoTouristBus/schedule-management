@@ -1,0 +1,158 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+model Department {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt()
+  sortOrder Float     @default(0)
+
+  code  String? @unique
+  name  String
+  color String?
+
+  User User[]
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  code          String?   @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime? @default(now()) @updatedAt()
+  sortOrder     Float     @default(0)
+  active        Boolean   @default(true)
+  hiredAt       DateTime?
+  retiredAt     DateTime?
+  transferredAt DateTime?
+  yukyuCategory String?   @default("A")
+
+  name     String
+  kana     String?
+  email    String? @unique
+  password String? @default("999999")
+
+  type String?
+
+  role String @default("user")
+
+  tempResetCode        String?
+  tempResetCodeExpired DateTime?
+  storeId              Int?
+  schoolId             Int?
+  rentaStoreId         Int?
+  type2                String?
+  shopId               Int?
+  membershipName       String?
+  damageNameMasterId   Int?
+  color                String?
+  app                  String?
+  apps                 String[]
+
+  // tbm
+
+  employeeCode String? @unique
+  phone        String?
+
+  avatar String? // 子ども用アバター画像URL
+
+  bcc String?
+
+  UserRole UserRole[]
+
+  // TbmOperation                     TbmOperation[]
+  // TbmOperationGroup                TbmOperationGroup[]
+
+  department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId Int?
+}
+
+model ReleaseNotes {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt()
+  sortOrder Float     @default(0)
+
+  rootPath         String
+  title            String?
+  msg              String
+  imgUrl           String?
+  confirmedUserIds Int[]
+}
+
+model Tokens {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt()
+  sortOrder Float     @default(0)
+
+  name      String    @unique
+  token     String
+  expiresAt DateTime?
+}
+
+model GoogleAccessToken {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt()
+  sortOrder Float     @default(0)
+
+  email         String    @unique
+  access_token  String?
+  refresh_token String?
+  scope         String?
+  token_type    String?
+  id_token      String?
+  expiry_date   DateTime?
+  tokenJSON     String?
+}
+
+model RoleMaster {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  sortOrder Float     @default(0)
+
+  name        String     @unique
+  description String?
+  color       String?
+  apps        String[]
+  UserRole    UserRole[]
+}
+
+model UserRole {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  sortOrder Float     @default(0)
+
+  User         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+  RoleMaster   RoleMaster @relation(fields: [roleMasterId], references: [id], onDelete: Cascade)
+  roleMasterId Int
+
+  @@unique([userId, roleMasterId], name: "userId_roleMasterId_unique")
+}
+
+model ChainMethodLock {
+  id        Int       @id @default(autoincrement())
+  isLocked  Boolean   @default(false)
+  expiresAt DateTime?
+  updatedAt DateTime  @updatedAt
+}
+
+model Calendar {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt()
+  sortOrder Float     @default(0)
+
+  date DateTime @unique
+
+  holidayType String @default("出勤")
+}

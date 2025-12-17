@@ -1,0 +1,5 @@
+---
+description: read the markdown file in src/cm/ai-docs/ai-agent-direction.md and follow the rule
+globs:
+alwaysApply: true
+---

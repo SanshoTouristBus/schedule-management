@@ -1,0 +1,86 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "allowSyntheticDefaultImports": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@prisma/*": [
+        "prisma/schema/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@cm/*": [
+        "src/cm/*"
+      ],
+      "@shadcn/*": [
+        "src/cm/shadcn/*"
+      ]
+    },
+    "strictNullChecks": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts",
+    "next.config.ts",
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.dump",
+    "public/**/*",
+    "scripts/**/*",
+    ".next/cache/**/*",
+    ".next/server/**/*",
+    ".next/static/**/*",
+    "dist",
+    "build",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "coverage",
+    "**/scheme-json-export.js",
+    "src/app/(apps)/KM/**/*",
+    "src/app/(apps)/aidocument/**/*",
+    "src/app/(apps)/compas/**/*",
+    "src/app/(apps)/counseling/**/*",
+    "src/app/(apps)/generated/**/*",
+    "src/app/(apps)/hakobun/**/*",
+    "src/app/(apps)/hakobun-analysis/**/*",
+    "src/app/(apps)/image-captioner/**/*",
+    "src/app/(apps)/keihi/**/*",
+    "src/app/(apps)/kickswrap/**/*",
+    "src/app/(apps)/migrations/**/*",
+    "src/app/(apps)/page/**/*",
+    "src/app/(apps)/portal/**/*",
+    "src/app/(apps)/sbm/**/*",
+    "src/app/(apps)/stock/**/*",
+    "src/app/(apps)/tbm/**/*",
+    "src/app/(apps)/teamSynapse/**/*",
+    "src/app/(apps)/tmp/**/*",
+    "src/app/(apps)/training/**/*"
+  ]
+}

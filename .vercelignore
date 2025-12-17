@@ -1,0 +1,65 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# dependencies
+/node_modules
+
+
+
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+.env
+/scripts/prepareVercelUpload.js
+
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+latest.dump
+
+
+
+# PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
+
+
+# styled-systemのフォルダは不要
+/styled-system/
+
+*.dump
+**dump
+.vercelignore
+
+src/app/(excluded)/**/*
+
+
+#ignoreを選択
+src/app/**/image-captioner
+src/app/**/health
+src/app/**/sbm
+src/app/**/sohken
+src/app/**/aquapot
+src/app/**/shinsei
+src/app/**/apex
+src/app/**/Advantage
+src/app/**/tmp
+src/app/**/achievement
+src/app/**/kingOfTime
+src/app/**/keihi
+src/app/**/stock
+src/app/**/kickswrap
+src/app/**/KM
+src/app/**/edu
+#src/app/**/tbm
