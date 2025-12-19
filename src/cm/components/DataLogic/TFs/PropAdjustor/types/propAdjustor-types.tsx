@@ -15,6 +15,7 @@ export interface PropAdjustorPropsType {
 }
 
 export type ClientPropsType = {
+  UseRecordsReturn?: UseRecordsReturn
   params: anyObject
   dataModelName: dataModelNameType
   surroundings?: surroundings
@@ -37,7 +38,6 @@ export type ClientPropsType = {
   }
 
 export interface ClientPropsType2 extends ClientPropsType {
-  UseRecordsReturn?: UseRecordsReturn
   useGlobalProps: useGlobalPropType
   columns: any
   formData: any

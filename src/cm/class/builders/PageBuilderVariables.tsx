@@ -26,7 +26,7 @@ export type DataModelBuilder = {
 }
 
 export const roleMaster: DataModelBuilder = {
-  bottom: props => {
+  top: props => {
     return (
       <GlobalModal
         {...{
@@ -66,6 +66,7 @@ const RoleAllocationTable = ({PageBuilderExtraProps}) => {
       include: {UserRole: {include: {RoleMaster: {}}}},
       orderBy: [{code: `asc`}, {sortOrder: `asc`}, {name: `asc`}],
     })
+
     setusers(users)
   }
 

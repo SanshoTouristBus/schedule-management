@@ -12,6 +12,11 @@ import {CssString} from '@cm/components/styles/cssString'
 import {cn} from '@cm/shadcn/lib/utils'
 import {UseRecordsReturn} from '@cm/components/DataLogic/TFs/PropAdjustor/hooks/useRecords/useRecords'
 import {onFormItemBlurType} from '@cm/types/types'
+import {
+  generalDoStandardPrisma,
+} from '@cm/lib/server-actions/common-server-actions/doStandardPrisma/doStandardPrisma'
+import useGlobal from '@cm/hooks/globalHooks/useGlobal'
+import useLocalLoading from '@cm/hooks/globalHooks/useLocalLoading'
 
 export type InlineEditableValueProps = {
   col: colType
@@ -23,6 +28,8 @@ export type InlineEditableValueProps = {
 
 const InlineEditableValue = React.memo(
   ({col, record, displayValue, dataModelName, UseRecordsReturn}: InlineEditableValueProps) => {
+    const {toggleLocalLoading, LocalLoader} = useLocalLoading()
+    const {toggleLoad} = useGlobal()
     const [isEditMode, setIsEditMode] = useState(false)
     const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -70,47 +77,55 @@ const InlineEditableValue = React.memo(
           ...record,
           ...data,
         }
+        const oldValue = JSON.stringify(lastSavedValueRef.current ?? '')
+        const newValue = JSON.stringify(data[col.id] ?? '')
 
-        const message = await validateBeforeUpdate({value: data[col.id], formData: data})
-        const doUpdate = message === undefined || message === true
+        const isSame = oldValue === newValue
 
-        if (doUpdate === false) {
-          toast.error(message, {position: `top-center`})
-          UseRecordsReturn.mutateRecords({record: record})
+        if (isSame) {
+          setIsEditMode(false)
           return false
         }
 
-        const payload = {[col.id]: data[col.id]}
+        const res = await toggleLocalLoading(async () => {
+          const message = await validateBeforeUpdate({value: data[col.id], formData: data})
+          const doUpdate = message === undefined || message === true
 
-        // 最後に保存した値と比較（2回目以降の更新も検出）
-        await UpsertMain({
-          prismaDataExtractionQuery: {},
-          latestFormData: {...latestFormData, ...payload},
-          upsertController: upsertController,
-          extraFormState: {},
-          dataModelName: dataModelName as any,
-          additional: {},
-          formData: record,
-          columns,
-          toggleLoadFunc: async cb => {
-            try {
-              return await cb()
-            } catch (error) {
-              console.error(error.stack)
-              toast.error('エラーが発生しました。', {position: `top-center`})
-            }
-          },
+          if (doUpdate === false) {
+            toast.error(message, {position: `top-center`})
+            UseRecordsReturn.mutateRecords({record: record})
+            return false
+          }
+
+          const payload = {[col.id]: data[col.id]}
+
+          // 最後に保存した値と比較（2回目以降の更新も検出）
+          await UpsertMain({
+            prismaDataExtractionQuery: {},
+            latestFormData: {...latestFormData, ...payload},
+            upsertController: upsertController,
+            extraFormState: {},
+            dataModelName: dataModelName as any,
+            additional: {},
+            formData: record,
+            columns,
+          })
+
+          const {result: latestRecord} = await generalDoStandardPrisma(dataModelName, 'findUnique', {
+            where: {id: record.id},
+            include: UseRecordsReturn.prismaDataExtractionQuery?.include,
+          })
+
+          // 保存成功後、最後に保存した値を更新
+          lastSavedValueRef.current = payload[col.id]
+          UseRecordsReturn.mutateRecords({
+            record: latestRecord,
+          })
+
+          return true
         })
 
-        // 保存成功後、最後に保存した値を更新
-        lastSavedValueRef.current = payload[col.id]
-        UseRecordsReturn.mutateRecords({
-          record: {
-            ...record,
-            [col.id]: payload[col.id],
-          },
-        })
-        return true
+        return res
       },
       [record, col, dataModelName, UseRecordsReturn, validateBeforeUpdate, upsertController, columns]
     )
@@ -174,6 +189,16 @@ const InlineEditableValue = React.memo(
       setIsEditMode(false)
     }, [ReactHookForm, record])
 
+    // boolean型の場合はクリックでトグル
+    const toggleBoolean = useCallback(async () => {
+      const currentValue = record[col.id]
+      const newValue = !currentValue
+      const success = await updateData({[col.id]: newValue})
+      if (success !== false) {
+        // 更新成功時は何もしない（updateData内でmutateRecordsが呼ばれる）
+      }
+    }, [record, col.id, updateData])
+
     // 外側クリックで保存して閉じる
     useEffect(() => {
       if (!isEditMode) return
@@ -204,9 +229,12 @@ const InlineEditableValue = React.memo(
 
     // 表示モード
     if (!isEditMode) {
+      const isBooleanType = col.type === 'boolean'
+      const handleClick = isBooleanType ? toggleBoolean : startEdit
+
       return (
         <div
-          onClick={startEdit}
+          onClick={handleClick}
           className={cn(
             'cursor-pointer rounded px-1 py-0.5 transition-colors',
             'hover:bg-blue-50    bg-yellow-50',
@@ -215,13 +243,15 @@ const InlineEditableValue = React.memo(
           )}
         >
           <span>{displayValue}</span>
-          <PencilIcon
-            className={cn(
-              // ' right-0 top-1/2 -translate-y-1/2',
-              'h-4 w-4 text-blue-400 opacity-0 transition-opacity',
-              'group-hover:opacity-100'
-            )}
-          />
+          {!isBooleanType && (
+            <PencilIcon
+              className={cn(
+                // ' right-0 top-1/2 -translate-y-1/2',
+                'h-4 w-4 text-blue-400 opacity-0 transition-opacity',
+                'group-hover:opacity-100'
+              )}
+            />
+          )}
         </div>
       )
     }
@@ -271,6 +301,7 @@ const InlineEditableValue = React.memo(
             },
           }}
         />
+        <LocalLoader>データ更新中</LocalLoader>
       </div>
     )
   }

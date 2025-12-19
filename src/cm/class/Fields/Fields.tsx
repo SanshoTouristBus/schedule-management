@@ -30,9 +30,17 @@ type freeColType = Exclude<colTypeOptional, 'id' | 'label'>
 export type setterType = (props: {col: colType}) => freeColType
 
 // 編集可能かどうかを判定するヘルパー関数
-const isColEditable = (col: colType): boolean => {
-  // form設定があり、disabledでなく、format（カスタム表示）がない場合は編集可能
-  return Boolean(col.form) && col.form?.disabled !== true && !col.format
+const isColEditable = (col: colType, editable): boolean => {
+  // form設定があり、disabledでない場合は編集可能
+  // td.editableが設定されている場合は、formatがあっても編集可能
+
+  const hasForm = col.form && col.form.hidden !== true
+  const isNotDisabled = col.form?.disabled !== true
+
+  // td.editableが明示的に設定されている場合はformatに関係なく編集可能
+  const result = hasForm && isNotDisabled && editable
+
+  return result
 }
 
 export class Fields {
@@ -94,7 +102,9 @@ export class Fields {
             const pseudoId = props.convertColId?.[col.id] ?? col.id
             let colValue: React.ReactNode = ''
 
-            if (col.format) {
+            if (col.type === 'boolean') {
+              colValue = <input type="checkbox" checked={!!row[col.id]} onChange={e => undefined} />
+            } else if (col.format) {
               colValue = col.format(value, row, col)
             } else if (col.type === 'price') {
               colValue = NumHandler.toPrice(row[col.id])
@@ -119,7 +129,7 @@ export class Fields {
         return (
           <TableInfoWrapper {...{showShadow, label: props.wrapperLabel ?? ''}}>
             {existingValues.map((d, i) => {
-              const canEdit = editable && d.col && isColEditable(d.col) && dataModelName && UseRecordsReturn
+              const canEdit = editable && d.col && isColEditable(d.col, editable) && dataModelName && UseRecordsReturn
 
               return (
                 <div key={i}>
@@ -132,7 +142,10 @@ export class Fields {
                     <TableInfo label={d.label} wrapperWidthPx={wrapperWidthPx} labelWidthPx={labelWidthPx}>
                       {canEdit ? (
                         <InlineEditableValue
-                          col={{...d.col!, td: {...d.col!.td, editable: {}}}}
+                          col={{
+                            ...d.col!,
+                            td: {editable: {}, ...d.col!.td},
+                          }}
                           record={row}
                           displayValue={d.value}
                           dataModelName={dataModelName}

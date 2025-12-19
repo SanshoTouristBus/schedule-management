@@ -1,12 +1,12 @@
-import { PrismaModelNames } from '@cm/types/prisma-types'
+import {PrismaModelNames} from '@cm/types/prisma-types'
 
-import { colType } from '@cm/types/col-types'
-import { UseRecordsReturn } from '@cm/components/DataLogic/TFs/PropAdjustor/hooks/useRecords/useRecords'
+import {colType} from '@cm/types/col-types'
+import {UseRecordsReturn} from '@cm/components/DataLogic/TFs/PropAdjustor/hooks/useRecords/useRecords'
 
-import { useGlobalPropType } from '@cm/hooks/globalHooks/useGlobalOrigin'
-import { atom, useAtom } from 'jotai'
-import { atomFamily } from 'jotai/utils'
-import { useMemo } from 'react'
+import {useGlobalPropType} from '@cm/hooks/globalHooks/useGlobalOrigin'
+import {atom, useAtom} from 'jotai'
+import {atomFamily} from 'jotai/utils'
+import {useMemo} from 'react'
 
 export const useJotai = useAtom
 
@@ -62,43 +62,52 @@ export type atomTypes = {
       DD_FR___DD_CENTSYUB: number
       DD_FR___DD_NOSYA: number
     }
-    SqlGetter: (props: { additionalWherePhrase?: string }) => { leadTimeDetailSql: string; leadTimeAggSql: string }
+    SqlGetter: (props: {additionalWherePhrase?: string}) => {leadTimeDetailSql: string; leadTimeAggSql: string}
   }
 
   tableSortModalOpen: boolean
   lastLoggedTime: Date | null
   dataUpdated: number
-  colConfigModal: null | { col: colType; dataModelName: string }
+  colConfigModal: null | {col: colType; dataModelName: string}
   showpopover: string | null
   globalCurrentTabIdx: any
   globalLoader: boolean
   globalAccordionOpen: boolean
   globalModalOpen: boolean
-  torokuDateApplicationForm: { newCar: any }
-  torokuMikomiApplicationForm: { newCar: any }
-  selectedUcarNotes: { UcarData: any; mutateRecords: UseRecordsReturn[`mutateRecords`] }
-  showGarageRegister: { ucar: any; UcarGarageLocationMaster: any }
-  ucrDetailUpdater: { ucarId: any }
-  sateiConnectionGMF: { newCar: any; sateiNoList: any }
-  crScheduleSwitcherModal: { theCar: any; lastHistory: any }
+  torokuDateApplicationForm: {newCar: any}
+  torokuMikomiApplicationForm: {newCar: any}
+  selectedUcarNotes: {UcarData: any; mutateRecords: UseRecordsReturn[`mutateRecords`]}
+  showGarageRegister: {ucar: any; UcarGarageLocationMaster: any}
+  ucrDetailUpdater: {ucarId: any}
+  sateiConnectionGMF: {newCar: any; sateiNoList: any}
+  crScheduleSwitcherModal: {theCar: any; lastHistory: any}
   waitingCarVisualizerOpen: boolean
-  checkPointModalGMF: { cp: any; newCar: any; UseRecordsReturn: UseRecordsReturn }
-  stuffSwitcherGMF: { newCar: any }
+  checkPointModalGMF: {cp: any; newCar: any; UseRecordsReturn: UseRecordsReturn}
+  stuffSwitcherGMF: {newCar: any}
 
   //
   displayedContents: string[]
-  saleEditorGMF: { saleRecordId: number }
-  workLogHistoryGMF: { workLogId: number }
+  saleEditorGMF: {saleRecordId: number}
+  workLogHistoryGMF: {workLogId: number}
   shiftEditPropsGMF: {
     selectedData
     RelationalModel: PrismaModelNames
     GenbaDay
     baseModelName
   }
+  GenbaDayCardEditorModalGMF: {taskMidTable; genbaId; genbaDayId}
+  GenbaDayBasicEditorGMF: {GenbaDay}
 
-
+  odometerInputGMF: {
+    OdometerInput: {
+      date: Date
+      odometerStart: number
+      odometerEnd: number
+      TbmVehicle
+    }
+  }
 }
-type myAtomFamilyParams = { atomKey: atomKey; defaultState: any }
+type myAtomFamilyParams = {atomKey: atomKey; defaultState: any}
 
 const myAtomFamily = atomFamily(
   (param: myAtomFamilyParams) => {
@@ -128,7 +137,7 @@ export const useJotaiByKey = <S,>(atomKey: any, defaultState: any) => {
 
 export const jotai_showAwards = atom<boolean>(false)
 export const jotai_masterKeyDisplayedContentsSelector = atom<boolean>(false)
-export const jotai_moveStudent = atom<null | { id: number }>(null)
+export const jotai_moveStudent = atom<null | {id: number}>(null)
 export const jotaiStudentGroups = atom<any[] | null>(null)
 
 export const jotai_pdfPages = atom<Blob[]>([])

@@ -38,7 +38,7 @@ export async function fetchAlt(url: string, body: any, defaultOptions?: fetchOpt
     .then(async response => {
       const {status, headers, statusText} = response
       if (!response.status) {
-        console.error(`fetchAlt error [status:${status}, statusText:${statusText}] `), {url, body}
+        ;(console.error(`fetchAlt error [status:${status}, statusText:${statusText}] `), {url, body})
         const result = await response.json()
         console.error(result)
       }

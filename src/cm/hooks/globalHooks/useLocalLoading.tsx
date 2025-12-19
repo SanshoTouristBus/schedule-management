@@ -10,8 +10,8 @@ export default function useLocalLoading() {
     return res
   }
 
-  const LocalLoader = () => {
-    return <div>{localLoading && <Loader>Loading</Loader>}</div>
+  const LocalLoader = ({children}: {children?: React.ReactNode}) => {
+    return <div>{localLoading && <Loader>{children ?? `Loading`}</Loader>}</div>
   }
 
   return {

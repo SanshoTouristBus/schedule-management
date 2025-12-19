@@ -3,6 +3,7 @@ import { MyPageCC } from './MyPageCC'
 import { initServerComopnent } from 'src/non-common/serverSideFunction'
 import { getStHolidays } from '../../(server-actions)/holiday-actions'
 import { getStUserHolidays } from '../../(server-actions)/user-holiday-actions'
+import { getDrivers } from '../../(server-actions)/driver-actions'
 
 // データ取得
 const getInitialData = async (userId: number) => {
@@ -82,6 +83,12 @@ export default async function MyPagePage(props) {
 
  const { vehicles, publishSetting, holidays, userHolidays } = await getInitialData(userId)
 
+ // ユーザー一覧を取得（管理者用のユーザー切り替えフォーム用）
+ const allUsers = await getDrivers()
+
+ // 実際のログインユーザーID（セッションのID）
+ const realLoginUserId = session?.id || userId
+
  return (
   <div>
    <MyPageCC
@@ -92,6 +99,8 @@ export default async function MyPagePage(props) {
     publishEndDate={publishSetting?.publishEndDate ?? null}
     holidays={holidays}
     userHolidays={userHolidays}
+    users={allUsers.map(u => ({ id: u.id, name: u.name }))}
+    realLoginUserId={realLoginUserId}
    />
   </div>
  )

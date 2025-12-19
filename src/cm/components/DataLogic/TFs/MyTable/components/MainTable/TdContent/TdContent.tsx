@@ -21,6 +21,20 @@ const TdContent = React.memo(
     const {dataModelName, col, record, value, UseRecordsReturn, tdStyle} = props
 
     const isEditableCell = col?.td?.editable && ![`file`].includes(DH__switchColType({type: col.type}))
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/2f19b60b-6ff5-4ce2-bb73-d9ffe580d2a6', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        location: 'TdContent.tsx:isEditableCell',
+        message: 'TdContent editable check',
+        data: {colId: col.id, hasTdEditable: !!col?.td?.editable, colType: col.type, isEditableCell, hasFormat: !!col.format},
+        timestamp: Date.now(),
+        sessionId: 'debug-session',
+        hypothesisId: 'B',
+      }),
+    }).catch(() => {})
+    // #endregion
 
     const showLabel = col?.isMain === undefined && Fields.doShowLabel(col)
 

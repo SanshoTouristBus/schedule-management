@@ -28,11 +28,13 @@ const MyTextarea = React.forwardRef((props: ControlProps, ref) => {
     }
   }
 
+  const {inputProps, autoOpen} = col.inputProps ?? {}
+
   return (
     <div>
       <textarea
         {...{
-          ...col.inputProps,
+          ...inputProps,
           style: {...textAreaStyle},
           className: formProps.className,
           ...Register,

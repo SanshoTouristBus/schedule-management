@@ -1,17 +1,17 @@
 'use client'
 
-import React, { Fragment, useMemo } from 'react'
-import { Z_INDEX } from '@cm/lib/constants/constants'
-import { HREF } from '@cm/lib/methods/urls'
-import { T_LINK } from '@cm/components/styles/common-components/links'
+import React, {Fragment, useMemo} from 'react'
+import {Z_INDEX} from '@cm/lib/constants/constants'
+import {HREF} from '@cm/lib/methods/urls'
+import {T_LINK} from '@cm/components/styles/common-components/links'
 
-import { R_Stack } from '@cm/components/styles/common-components/common-components'
+import {R_Stack} from '@cm/components/styles/common-components/common-components'
 import useWindowSize from '@cm/hooks/useWindowSize'
-import { adminContext } from '@cm/components/layout/Admin/type'
+import {adminContext} from '@cm/components/layout/Admin/type'
 import AppLogo from '@cm/components/layout/Navigation/AppLogo'
 import Breadcrumbs from '@cm/components/layout/breadcrumbs/Breadcrumbs'
 import NavBar from '@cm/components/layout/Navigation/NavBar'
-import { cn } from '@cm/shadcn/lib/utils'
+import {cn} from '@cm/shadcn/lib/utils'
 
 // 型定義を改善
 export interface HeaderProps {
@@ -28,26 +28,26 @@ const headerStyles = {
   },
 } as const
 
-const Header = React.memo<HeaderProps>(({ adminContext }) => {
+const Header = React.memo<HeaderProps>(({adminContext}) => {
   const {
     AppName,
     Logo,
     showLogoOnly,
     PageBuilderGetter,
     useGlobalProps,
-    pathItemObject: { navItems, pages },
+    pathItemObject: {navItems, pages},
     ModelBuilder,
     horizontalMenu,
-    menuContext: { MenuButton },
+    menuContext: {MenuButton},
   } = adminContext
 
-  const { query, rootPath } = useGlobalProps ?? {}
-  const { appbarHeight, PC } = useWindowSize()
+  const {query, rootPath} = useGlobalProps ?? {}
+  const {appbarHeight, PC} = useWindowSize()
 
   // GlobalIdSelectorのメモ化を改善
   const GlobalIdSelector = useMemo(() => {
     if (!PageBuilderGetter?.class[PageBuilderGetter.getter]) return null
-    return PageBuilderGetter.class[PageBuilderGetter.getter]({ useGlobalProps })
+    return PageBuilderGetter.class[PageBuilderGetter.getter]({useGlobalProps})
   }, [PageBuilderGetter, useGlobalProps])
 
   // topLinkのメモ化
@@ -64,7 +64,7 @@ const Header = React.memo<HeaderProps>(({ adminContext }) => {
       className={cn('shadow ', process.env.NEXT_PUBLIC_IS_STAGING ? 'bg-red-100' : 'shadow-primary-main bg-primary-light')}
     >
       <div>
-        <R_Stack style={{ minHeight: appbarHeight }} className="justify-between px-2 py-0 md:px-6">
+        <R_Stack style={{minHeight: appbarHeight}} className="justify-between px-2 py-0 md:px-6">
           <R_Stack>
             {horizontalMenu === false && PC && MenuButton}
             <R_Stack className="gap-x-10">

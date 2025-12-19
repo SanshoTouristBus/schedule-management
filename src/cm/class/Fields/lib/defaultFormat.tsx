@@ -23,7 +23,7 @@ import {StrHandler} from '@cm/class/StrHandler'
 
 export const defaultFormat = (value, row, col) => {
   try {
-    const color = (() => {
+    let color = (() => {
       let optionObjArr: optionType[] = []
       if (Array.isArray(col?.forSelect?.optionsOrOptionFetcher)) {
         optionObjArr = mapAdjustOptionValue(col?.forSelect?.optionsOrOptionFetcher)
@@ -42,6 +42,7 @@ export const defaultFormat = (value, row, col) => {
 
     if (col.forSelect?.codeMaster) {
       displayValue = col.forSelect.codeMaster?.byCode(value)?.label
+      color = col.forSelect.codeMaster?.byCode(value)?.color
     }
 
     const isEditable = col?.td?.editable

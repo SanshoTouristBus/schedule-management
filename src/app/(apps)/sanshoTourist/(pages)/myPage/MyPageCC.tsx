@@ -8,6 +8,7 @@ import useSWR from 'swr'
 import { WeeklyView } from '../../(components)/MyPageViews/WeeklyView'
 import { MonthlyView } from '../../(components)/MyPageViews/MonthlyView'
 import { getStSchedulesByDriver } from '../../(server-actions)/schedule-actions'
+import { UserSwitchForm } from '../../(components)/UserSwitchForm'
 
 type Props = {
   userId: number
@@ -17,6 +18,8 @@ type Props = {
   publishEndDate: Date | null
   holidays: StHoliday[]
   userHolidays: StUserHoliday[]
+  users: { id: number; name: string }[]
+  realLoginUserId: number
 }
 
 // 日付操作ユーティリティ
@@ -34,7 +37,7 @@ const getEndOfMonth = (date: Date) => {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0)
 }
 
-export const MyPageCC = ({ userId, userName, vehicles, isSystemAdmin, publishEndDate, holidays, userHolidays }: Props) => {
+export const MyPageCC = ({ userId, userName, vehicles, isSystemAdmin, publishEndDate, holidays, userHolidays, users, realLoginUserId }: Props) => {
   const [viewMode, setViewMode] = useState<'weekly' | 'monthly'>('weekly')
   const [currentDate, setCurrentDate] = useState(() => {
     const today = new Date()
@@ -75,6 +78,9 @@ export const MyPageCC = ({ userId, userName, vehicles, isSystemAdmin, publishEnd
   return (
     <div className={`mx-auto w-fit`}>
       <h2 className="text-2xl font-bold mb-4">マイページ ({userName}さん)</h2>
+
+      {/* ユーザー切り替えフォーム（管理者のみ） */}
+      <UserSwitchForm users={users} currentUserId={realLoginUserId} isSystemAdmin={isSystemAdmin} />
 
       {/* ビュー切り替え */}
       <div className="flex justify-between items-center mb-4">
