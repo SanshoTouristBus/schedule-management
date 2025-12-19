@@ -9,7 +9,8 @@ export const sanshoTourist_PAGES = (props: PageGetterType) => {
   const { session, rootPath, pathname, query } = props
 
   const scopes = getScopes(session, { query, roles })
-  const { login, admin } = scopes
+  const { login, admin, getSanshoTouristScopes } = scopes
+  const { isSystemAdmin, isEditor, isViewer } = getSanshoTouristScopes()
 
   // 乗務員メニュー
   const driverPath = [
@@ -41,32 +42,7 @@ export const sanshoTourist_PAGES = (props: PageGetterType) => {
       label: <IconLetter {...{ Icon: ListIcon }}>マスタ管理</IconLetter>,
 
     },
-    // {
-    //   tabId: '',
-    //   label: <IconLetter {...{Icon: ListIcon}}>マスタ管理</IconLetter>,
-    //   children: [
-    //     {
-    //       tabId: 'stVehicle',
-    //       label: <IconLetter {...{Icon: Truck}}>車両マスタ</IconLetter>,
-    //     },
-    //     {
-    //       tabId: 'stCustomer',
-    //       label: <IconLetter {...{Icon: Building}}>会社マスタ</IconLetter>,
-    //     },
-    //     {
-    //       tabId: 'stContact',
-    //       label: <IconLetter {...{Icon: UserCheck}}>担当者マスタ</IconLetter>,
-    //     },
-    //     {
-    //       tabId: 'stHoliday',
-    //       label: <IconLetter {...{Icon: Flag}}>祝日マスタ</IconLetter>,
-    //     },
-    //     {
-    //       tabId: 'stDriver',
-    //       label: <IconLetter {...{Icon: User}}>乗務員マスタ</IconLetter>,
-    //     },
-    //   ],
-    // },
+
     {
       tabId: '',
       label: <IconLetter {...{ Icon: Settings }}>設定</IconLetter>,
@@ -87,7 +63,7 @@ export const sanshoTourist_PAGES = (props: PageGetterType) => {
     },
   ].map(item => ({
     ...item,
-    exclusiveTo: admin,
+    exclusiveTo: isSystemAdmin,
     ROOT: [rootPath],
   }))
 

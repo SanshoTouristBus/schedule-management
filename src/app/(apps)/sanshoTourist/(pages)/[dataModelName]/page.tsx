@@ -94,6 +94,18 @@ const parameters = async (props: { params; query; session; scopes: ReturnType<ty
           }
         },
       },
+      {
+        modelNames: ['roleMaster'],
+        setParams: async () => {
+          return {
+            myTable: {
+              create: false,
+              update: false,
+              delete: false,
+            }
+          }
+        },
+      },
     ],
   })
   return customParams
