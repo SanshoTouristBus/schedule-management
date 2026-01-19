@@ -40,9 +40,9 @@ const getEndOfMonth = (date: Date) => {
 export const MyPageCC = ({ userId, userName, vehicles, isSystemAdmin, publishEndDate, holidays, userHolidays, users, realLoginUserId }: Props) => {
   const [viewMode, setViewMode] = useState<'weekly' | 'monthly'>('weekly')
   const [currentDate, setCurrentDate] = useState(() => {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    return today
+    // ローカルタイムゾーンで正しい今日の日付を作成（UTC変換ずれを防ぐ）
+    const now = new Date()
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)
   })
 
   // スケジュールデータ取得
@@ -62,6 +62,9 @@ export const MyPageCC = ({ userId, userName, vehicles, isSystemAdmin, publishEnd
         dateTo = getEndOfMonth(currentDate)
       }
 
+
+
+
       const schedules = await getStSchedulesByDriver({
         userId,
         dateFrom,
@@ -69,6 +72,8 @@ export const MyPageCC = ({ userId, userName, vehicles, isSystemAdmin, publishEnd
         isSystemAdmin,
         publishEndDate,
       })
+
+
       return schedules
     }
   )
@@ -106,7 +111,7 @@ export const MyPageCC = ({ userId, userName, vehicles, isSystemAdmin, publishEnd
 
       {/* ビューコンポーネント */}
       {viewMode === 'weekly' ? (
-        <WeeklyView schedules={schedules} vehicles={vehicles} holidays={holidays} userHolidays={userHolidays} />
+        <WeeklyView schedules={schedules} vehicles={vehicles} holidays={holidays} userHolidays={userHolidays} currentDate={currentDate} setCurrentDate={setCurrentDate} />
       ) : (
         <MonthlyView
           schedules={schedules}

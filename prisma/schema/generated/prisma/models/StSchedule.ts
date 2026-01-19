@@ -58,6 +58,7 @@ export type StScheduleMinAggregateOutputType = {
   departureTime: string | null
   returnTime: string | null
   remarks: string | null
+  status: string | null
   pdfFileName: string | null
   pdfFileUrl: string | null
   batchId: string | null
@@ -81,6 +82,7 @@ export type StScheduleMaxAggregateOutputType = {
   departureTime: string | null
   returnTime: string | null
   remarks: string | null
+  status: string | null
   pdfFileName: string | null
   pdfFileUrl: string | null
   batchId: string | null
@@ -104,6 +106,7 @@ export type StScheduleCountAggregateOutputType = {
   departureTime: number
   returnTime: number
   remarks: number
+  status: number
   pdfFileName: number
   pdfFileUrl: number
   batchId: number
@@ -145,6 +148,7 @@ export type StScheduleMinAggregateInputType = {
   departureTime?: true
   returnTime?: true
   remarks?: true
+  status?: true
   pdfFileName?: true
   pdfFileUrl?: true
   batchId?: true
@@ -168,6 +172,7 @@ export type StScheduleMaxAggregateInputType = {
   departureTime?: true
   returnTime?: true
   remarks?: true
+  status?: true
   pdfFileName?: true
   pdfFileUrl?: true
   batchId?: true
@@ -191,6 +196,7 @@ export type StScheduleCountAggregateInputType = {
   departureTime?: true
   returnTime?: true
   remarks?: true
+  status?: true
   pdfFileName?: true
   pdfFileUrl?: true
   batchId?: true
@@ -301,6 +307,7 @@ export type StScheduleGroupByOutputType = {
   departureTime: string | null
   returnTime: string | null
   remarks: string | null
+  status: string
   pdfFileName: string | null
   pdfFileUrl: string | null
   batchId: string | null
@@ -347,6 +354,7 @@ export type StScheduleWhereInput = {
   departureTime?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   returnTime?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   remarks?: Prisma.StringNullableFilter<"StSchedule"> | string | null
+  status?: Prisma.StringFilter<"StSchedule"> | string
   pdfFileName?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   pdfFileUrl?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   batchId?: Prisma.StringNullableFilter<"StSchedule"> | string | null
@@ -374,6 +382,7 @@ export type StScheduleOrderByWithRelationInput = {
   departureTime?: Prisma.SortOrderInput | Prisma.SortOrder
   returnTime?: Prisma.SortOrderInput | Prisma.SortOrder
   remarks?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   pdfFileName?: Prisma.SortOrderInput | Prisma.SortOrder
   pdfFileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   batchId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -404,6 +413,7 @@ export type StScheduleWhereUniqueInput = Prisma.AtLeast<{
   departureTime?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   returnTime?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   remarks?: Prisma.StringNullableFilter<"StSchedule"> | string | null
+  status?: Prisma.StringFilter<"StSchedule"> | string
   pdfFileName?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   pdfFileUrl?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   batchId?: Prisma.StringNullableFilter<"StSchedule"> | string | null
@@ -431,6 +441,7 @@ export type StScheduleOrderByWithAggregationInput = {
   departureTime?: Prisma.SortOrderInput | Prisma.SortOrder
   returnTime?: Prisma.SortOrderInput | Prisma.SortOrder
   remarks?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   pdfFileName?: Prisma.SortOrderInput | Prisma.SortOrder
   pdfFileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   batchId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -462,6 +473,7 @@ export type StScheduleScalarWhereWithAggregatesInput = {
   departureTime?: Prisma.StringNullableWithAggregatesFilter<"StSchedule"> | string | null
   returnTime?: Prisma.StringNullableWithAggregatesFilter<"StSchedule"> | string | null
   remarks?: Prisma.StringNullableWithAggregatesFilter<"StSchedule"> | string | null
+  status?: Prisma.StringWithAggregatesFilter<"StSchedule"> | string
   pdfFileName?: Prisma.StringNullableWithAggregatesFilter<"StSchedule"> | string | null
   pdfFileUrl?: Prisma.StringNullableWithAggregatesFilter<"StSchedule"> | string | null
   batchId?: Prisma.StringNullableWithAggregatesFilter<"StSchedule"> | string | null
@@ -481,6 +493,7 @@ export type StScheduleCreateInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -508,6 +521,7 @@ export type StScheduleUncheckedCreateInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -528,6 +542,7 @@ export type StScheduleUpdateInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -555,6 +570,7 @@ export type StScheduleUncheckedUpdateInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -579,6 +595,7 @@ export type StScheduleCreateManyInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -598,6 +615,7 @@ export type StScheduleUpdateManyMutationInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -621,6 +639,7 @@ export type StScheduleUncheckedUpdateManyInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -654,6 +673,7 @@ export type StScheduleCountOrderByAggregateInput = {
   departureTime?: Prisma.SortOrder
   returnTime?: Prisma.SortOrder
   remarks?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   pdfFileName?: Prisma.SortOrder
   pdfFileUrl?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
@@ -685,6 +705,7 @@ export type StScheduleMaxOrderByAggregateInput = {
   departureTime?: Prisma.SortOrder
   returnTime?: Prisma.SortOrder
   remarks?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   pdfFileName?: Prisma.SortOrder
   pdfFileUrl?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
@@ -708,6 +729,7 @@ export type StScheduleMinOrderByAggregateInput = {
   departureTime?: Prisma.SortOrder
   returnTime?: Prisma.SortOrder
   remarks?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   pdfFileName?: Prisma.SortOrder
   pdfFileUrl?: Prisma.SortOrder
   batchId?: Prisma.SortOrder
@@ -888,6 +910,7 @@ export type StScheduleCreateWithoutStVehicleInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -913,6 +936,7 @@ export type StScheduleUncheckedCreateWithoutStVehicleInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -966,6 +990,7 @@ export type StScheduleScalarWhereInput = {
   departureTime?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   returnTime?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   remarks?: Prisma.StringNullableFilter<"StSchedule"> | string | null
+  status?: Prisma.StringFilter<"StSchedule"> | string
   pdfFileName?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   pdfFileUrl?: Prisma.StringNullableFilter<"StSchedule"> | string | null
   batchId?: Prisma.StringNullableFilter<"StSchedule"> | string | null
@@ -985,6 +1010,7 @@ export type StScheduleCreateWithoutStCustomerInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -1010,6 +1036,7 @@ export type StScheduleUncheckedCreateWithoutStCustomerInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -1056,6 +1083,7 @@ export type StScheduleCreateWithoutStContactInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -1081,6 +1109,7 @@ export type StScheduleUncheckedCreateWithoutStContactInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -1127,6 +1156,7 @@ export type StScheduleCreateWithoutStScheduleDriverInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -1153,6 +1183,7 @@ export type StScheduleUncheckedCreateWithoutStScheduleDriverInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -1188,6 +1219,7 @@ export type StScheduleUpdateWithoutStScheduleDriverInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1214,6 +1246,7 @@ export type StScheduleUncheckedUpdateWithoutStScheduleDriverInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1236,6 +1269,7 @@ export type StScheduleCreateManyStVehicleInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -1255,6 +1289,7 @@ export type StScheduleUpdateWithoutStVehicleInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1280,6 +1315,7 @@ export type StScheduleUncheckedUpdateWithoutStVehicleInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1303,6 +1339,7 @@ export type StScheduleUncheckedUpdateManyWithoutStVehicleInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1325,6 +1362,7 @@ export type StScheduleCreateManyStCustomerInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -1344,6 +1382,7 @@ export type StScheduleUpdateWithoutStCustomerInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1369,6 +1408,7 @@ export type StScheduleUncheckedUpdateWithoutStCustomerInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1392,6 +1432,7 @@ export type StScheduleUncheckedUpdateManyWithoutStCustomerInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1414,6 +1455,7 @@ export type StScheduleCreateManyStContactInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -1433,6 +1475,7 @@ export type StScheduleUpdateWithoutStContactInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1458,6 +1501,7 @@ export type StScheduleUncheckedUpdateWithoutStContactInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1481,6 +1525,7 @@ export type StScheduleUncheckedUpdateManyWithoutStContactInput = {
   departureTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   returnTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   pdfFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pdfFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1535,6 +1580,7 @@ export type StScheduleSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   departureTime?: boolean
   returnTime?: boolean
   remarks?: boolean
+  status?: boolean
   pdfFileName?: boolean
   pdfFileUrl?: boolean
   batchId?: boolean
@@ -1563,6 +1609,7 @@ export type StScheduleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   departureTime?: boolean
   returnTime?: boolean
   remarks?: boolean
+  status?: boolean
   pdfFileName?: boolean
   pdfFileUrl?: boolean
   batchId?: boolean
@@ -1589,6 +1636,7 @@ export type StScheduleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   departureTime?: boolean
   returnTime?: boolean
   remarks?: boolean
+  status?: boolean
   pdfFileName?: boolean
   pdfFileUrl?: boolean
   batchId?: boolean
@@ -1615,6 +1663,7 @@ export type StScheduleSelectScalar = {
   departureTime?: boolean
   returnTime?: boolean
   remarks?: boolean
+  status?: boolean
   pdfFileName?: boolean
   pdfFileUrl?: boolean
   batchId?: boolean
@@ -1622,7 +1671,7 @@ export type StScheduleSelectScalar = {
   deletedAt?: boolean
 }
 
-export type StScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "sortOrder" | "date" | "stCustomerId" | "stContactId" | "stVehicleId" | "organizationName" | "organizationContact" | "destination" | "hasGuide" | "departureTime" | "returnTime" | "remarks" | "pdfFileName" | "pdfFileUrl" | "batchId" | "deleted" | "deletedAt", ExtArgs["result"]["stSchedule"]>
+export type StScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "sortOrder" | "date" | "stCustomerId" | "stContactId" | "stVehicleId" | "organizationName" | "organizationContact" | "destination" | "hasGuide" | "departureTime" | "returnTime" | "remarks" | "status" | "pdfFileName" | "pdfFileUrl" | "batchId" | "deleted" | "deletedAt", ExtArgs["result"]["stSchedule"]>
 export type StScheduleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   StCustomer?: boolean | Prisma.StSchedule$StCustomerArgs<ExtArgs>
   StContact?: boolean | Prisma.StSchedule$StContactArgs<ExtArgs>
@@ -1665,6 +1714,7 @@ export type $StSchedulePayload<ExtArgs extends runtime.Types.Extensions.Internal
     departureTime: string | null
     returnTime: string | null
     remarks: string | null
+    status: string
     pdfFileName: string | null
     pdfFileUrl: string | null
     batchId: string | null
@@ -2112,6 +2162,7 @@ export interface StScheduleFieldRefs {
   readonly departureTime: Prisma.FieldRef<"StSchedule", 'String'>
   readonly returnTime: Prisma.FieldRef<"StSchedule", 'String'>
   readonly remarks: Prisma.FieldRef<"StSchedule", 'String'>
+  readonly status: Prisma.FieldRef<"StSchedule", 'String'>
   readonly pdfFileName: Prisma.FieldRef<"StSchedule", 'String'>
   readonly pdfFileUrl: Prisma.FieldRef<"StSchedule", 'String'>
   readonly batchId: Prisma.FieldRef<"StSchedule", 'String'>

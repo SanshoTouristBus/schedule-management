@@ -157,6 +157,7 @@ export const StScheduleScalarFieldEnum = {
   departureTime: 'departureTime',
   returnTime: 'returnTime',
   remarks: 'remarks',
+  status: 'status',
   pdfFileName: 'pdfFileName',
   pdfFileUrl: 'pdfFileUrl',
   batchId: 'batchId',

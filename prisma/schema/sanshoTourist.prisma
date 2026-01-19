@@ -92,6 +92,7 @@ model StSchedule {
  departureTime       String? // 出庫時間 (HH:mm)
  returnTime          String? // 帰庫時間 (HH:mm)
  remarks             String? // 備考
+ status              String  @default("予約") // ステータス: 予約, 仮予約, 確定, キャンセル
 
  // 添付ファイル
  pdfFileName String? // 運行指示書ファイル名

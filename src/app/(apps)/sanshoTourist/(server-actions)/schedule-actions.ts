@@ -1,7 +1,8 @@
 'use server'
 
 import prisma from 'src/lib/prisma'
-import {StSchedule} from '@prisma/generated/prisma/client'
+import { StSchedule } from '@prisma/generated/prisma/client'
+import { toUtc } from '@cm/class/Days/date-utils/calculations'
 
 // Types
 export type StScheduleInput = {
@@ -17,6 +18,7 @@ export type StScheduleInput = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string // ステータス: 予約, 仮予約, 確定, キャンセル
   pdfFileName?: string | null
   pdfFileUrl?: string | null
   batchId?: string | null
@@ -29,7 +31,7 @@ export type StScheduleWithRelations = Awaited<ReturnType<typeof getStSchedules>>
 // ========== CREATE ==========
 
 export const createStSchedule = async (data: Omit<StScheduleInput, 'id'>) => {
-  const {date, driverIds, ...rest} = data
+  const { date, driverIds, ...rest } = data
   // クライアントから送られるDateは既にUTC形式（日本時間00:00:00 = UTC前日15:00:00）
   // なのでそのまま使用する
   const utcDate = new Date(date)
@@ -47,6 +49,7 @@ export const createStSchedule = async (data: Omit<StScheduleInput, 'id'>) => {
       departureTime: rest.departureTime,
       returnTime: rest.returnTime,
       remarks: rest.remarks,
+      status: rest.status ?? '予約',
       pdfFileName: rest.pdfFileName,
       pdfFileUrl: rest.pdfFileUrl,
       batchId: rest.batchId,
@@ -90,11 +93,11 @@ export const getStSchedules = async (params?: {
     stVehicleId?: number
     deleted?: boolean
   }
-  orderBy?: {[key: string]: 'asc' | 'desc'}
+  orderBy?: { [key: string]: 'asc' | 'desc' }
   isSystemAdmin?: boolean
   publishEndDate?: Date | null
 }) => {
-  const {where, orderBy, isSystemAdmin, publishEndDate} = params ?? {}
+  const { where, orderBy, isSystemAdmin, publishEndDate } = params ?? {}
 
   // 公開範囲の終了日を考慮したdateTo
   let effectiveDateTo = where?.dateTo ? new Date(where.dateTo) : undefined
@@ -111,9 +114,9 @@ export const getStSchedules = async (params?: {
   return await prisma.stSchedule.findMany({
     where: {
       // クライアントから送られるDateは既にUTC形式なのでそのまま使用
-      ...(where?.dateFrom && {date: {gte: new Date(where.dateFrom)}}),
-      ...(effectiveDateTo && {date: {lte: effectiveDateTo}}),
-      ...(where?.stVehicleId && {stVehicleId: where.stVehicleId}),
+      ...(where?.dateFrom && { date: { gte: new Date(where.dateFrom) } }),
+      ...(effectiveDateTo && { date: { lte: effectiveDateTo } }),
+      ...(where?.stVehicleId && { stVehicleId: where.stVehicleId }),
       deleted: where?.deleted ?? false,
     },
     include: {
@@ -121,10 +124,10 @@ export const getStSchedules = async (params?: {
       StCustomer: true,
       StContact: true,
       StScheduleDriver: {
-        orderBy: {sortOrder: 'asc'},
+        orderBy: { sortOrder: 'asc' },
       },
     },
-    orderBy: orderBy ?? [{date: 'asc'}, {departureTime: 'asc'}],
+    orderBy: orderBy ?? [{ date: 'asc' }, { departureTime: 'asc' }],
   })
 }
 
@@ -136,7 +139,7 @@ export const getStSchedulesByDriver = async (params: {
   isSystemAdmin?: boolean
   publishEndDate?: Date | null
 }) => {
-  const {userId, dateFrom, dateTo, isSystemAdmin, publishEndDate} = params
+  const { userId, dateFrom, dateTo, isSystemAdmin, publishEndDate } = params
 
   // 公開範囲の終了日を考慮したdateTo
   let effectiveDateTo = dateTo ? new Date(dateTo) : undefined
@@ -149,38 +152,45 @@ export const getStSchedulesByDriver = async (params: {
     }
   }
 
-  return await prisma.stSchedule.findMany({
-    where: {
-      StScheduleDriver: {
-        some: {userId},
-      },
-      // クライアントから送られるDateは既にUTC形式なのでそのまま使用
-      ...(dateFrom && {date: {gte: new Date(dateFrom)}}),
-      ...(effectiveDateTo && {date: {lte: effectiveDateTo}}),
-      deleted: false,
+
+  const where = {
+    StScheduleDriver: {
+      some: { userId },
     },
+    // クライアントから送られるDateは既にUTC形式なのでそのまま使用
+    date:
+    {
+      gte: dateFrom ? dateFrom : undefined,
+      lte: effectiveDateTo ? effectiveDateTo : undefined
+    },
+    deleted: false,
+  }
+
+
+  return await prisma.stSchedule.findMany({
+    where,
     include: {
       StVehicle: true,
       StCustomer: true,
       StContact: true,
       StScheduleDriver: {
-        orderBy: {sortOrder: 'asc'},
+        orderBy: { sortOrder: 'asc' },
       },
     },
-    orderBy: [{date: 'asc'}, {departureTime: 'asc'}],
+    orderBy: [{ date: 'asc' }, { departureTime: 'asc' }],
   })
 }
 
 // 単一取得
 export const getStSchedule = async (id: number) => {
   return await prisma.stSchedule.findUnique({
-    where: {id},
+    where: { id },
     include: {
       StVehicle: true,
       StCustomer: true,
       StContact: true,
       StScheduleDriver: {
-        orderBy: {sortOrder: 'asc'},
+        orderBy: { sortOrder: 'asc' },
       },
     },
   })
@@ -189,16 +199,16 @@ export const getStSchedule = async (id: number) => {
 // ========== UPDATE ==========
 
 export const updateStSchedule = async (id: number, data: Partial<StScheduleInput>) => {
-  const {date, driverIds, ...rest} = data
+  const { date, driverIds, ...rest } = data
 
-  const updateData: any = {...rest}
+  const updateData: any = { ...rest }
   // クライアントから送られるDateは既にUTC形式（日本時間00:00:00 = UTC前日15:00:00）
   if (date) {
     updateData.date = new Date(date)
   }
 
   const result = await prisma.stSchedule.update({
-    where: {id},
+    where: { id },
     data: updateData,
   })
 
@@ -206,7 +216,7 @@ export const updateStSchedule = async (id: number, data: Partial<StScheduleInput
   if (driverIds !== undefined) {
     // 既存の乗務員を削除
     await prisma.stScheduleDriver.deleteMany({
-      where: {stScheduleId: id},
+      where: { stScheduleId: id },
     })
 
     // 新しい乗務員を追加
@@ -226,7 +236,7 @@ export const updateStSchedule = async (id: number, data: Partial<StScheduleInput
 
 // Upsert (Create or Update)
 export const upsertStSchedule = async (data: StScheduleInput) => {
-  const {id, ...rest} = data
+  const { id, ...rest } = data
 
   if (id) {
     // 更新時は既存データを取得して、編集できないフィールドは既存値を保持
@@ -236,12 +246,12 @@ export const upsertStSchedule = async (data: StScheduleInput) => {
       const updateData: Partial<StScheduleInput> = {
         ...rest,
         // 編集者が編集できないフィールドが含まれていない場合、既存値を保持
-        ...(rest.date === undefined && {date: existing.date}),
-        ...(rest.stVehicleId === undefined && {stVehicleId: existing.stVehicleId}),
-        ...(rest.stCustomerId === undefined && {stCustomerId: existing.stCustomerId}),
-        ...(rest.stContactId === undefined && {stContactId: existing.stContactId}),
-        ...(rest.departureTime === undefined && {departureTime: existing.departureTime}),
-        ...(rest.returnTime === undefined && {returnTime: existing.returnTime}),
+        ...(rest.date === undefined && { date: existing.date }),
+        ...(rest.stVehicleId === undefined && { stVehicleId: existing.stVehicleId }),
+        ...(rest.stCustomerId === undefined && { stCustomerId: existing.stCustomerId }),
+        ...(rest.stContactId === undefined && { stContactId: existing.stContactId }),
+        ...(rest.departureTime === undefined && { departureTime: existing.departureTime }),
+        ...(rest.returnTime === undefined && { returnTime: existing.returnTime }),
         ...(rest.driverIds === undefined && {
           driverIds: existing.StScheduleDriver?.map(sd => sd.userId) || [],
         }),
@@ -259,7 +269,7 @@ export const upsertStSchedule = async (data: StScheduleInput) => {
 // 論理削除
 export const deleteStSchedule = async (id: number) => {
   return await prisma.stSchedule.update({
-    where: {id},
+    where: { id },
     data: {
       deleted: true,
       deletedAt: new Date(),
@@ -271,14 +281,14 @@ export const deleteStSchedule = async (id: number) => {
 export const hardDeleteStSchedule = async (id: number) => {
   // 乗務員も削除 (Cascadeで自動削除)
   return await prisma.stSchedule.delete({
-    where: {id},
+    where: { id },
   })
 }
 
 // 一括削除 (batchIdで削除)
 export const deleteStSchedulesByBatchId = async (batchId: string) => {
   return await prisma.stSchedule.updateMany({
-    where: {batchId},
+    where: { batchId },
     data: {
       deleted: true,
       deletedAt: new Date(),

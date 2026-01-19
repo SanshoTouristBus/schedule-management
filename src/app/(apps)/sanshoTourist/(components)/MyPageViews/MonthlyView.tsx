@@ -20,6 +20,57 @@ type Props = {
 
 
 
+// ステータスに応じた背景色を取得
+const getStatusBackgroundColor = (status: string | undefined, hasGuide: boolean) => {
+  if (hasGuide) {
+    return 'bg-green-500'
+  }
+  switch (status) {
+    case '予約':
+      return 'bg-red-500'
+    case '仮予約':
+      return 'bg-blue-500'
+    case '確定':
+      return 'bg-yellow-500'
+    case 'キャンセル':
+      return 'bg-gray-400'
+    default:
+      return 'bg-blue-500'
+  }
+}
+
+// ステータスに応じた左ボーダーの色を取得
+const getStatusBorderColorModal = (status: string | undefined) => {
+  switch (status) {
+    case '予約':
+      return 'border-l-4 border-red-500'
+    case '仮予約':
+      return 'border-l-4 border-blue-500'
+    case '確定':
+      return 'border-l-4 border-yellow-500'
+    case 'キャンセル':
+      return 'border-l-4 border-gray-400'
+    default:
+      return 'border-l-4 border-blue-500'
+  }
+}
+
+// ステータスに応じたバッジの色を取得
+const getStatusBadgeColorModal = (status: string | undefined) => {
+  switch (status) {
+    case '予約':
+      return 'bg-red-100 text-red-700'
+    case '仮予約':
+      return 'bg-blue-100 text-blue-700'
+    case '確定':
+      return 'bg-yellow-100 text-yellow-700'
+    case 'キャンセル':
+      return 'bg-gray-100 text-gray-700'
+    default:
+      return 'bg-blue-100 text-blue-700'
+  }
+}
+
 export const MonthlyView = ({ schedules, currentDate, setCurrentDate, holidays, userHolidays: initialUserHolidays, userId }: Props) => {
   const ScheduleDetailModal = useModal<{ schedules: StScheduleWithRelations[]; dateStr: string } | null>()
 
@@ -215,11 +266,12 @@ export const MonthlyView = ({ schedules, currentDate, setCurrentDate, holidays, 
               {/* スケジュール部分 - クリックでスケジュール詳細 */}
               <div className="mt-1 space-y-0.5">
                 {d.schedules?.slice(0, 2).map(s => {
-                  const title = `${s.departureTime}→${s.returnTime} ${s.organizationName || '(未設定)'}\n行き先: ${s.destination || '-'}\n車両: ${s.StVehicle?.plateNumber || '不明'}${s.hasGuide ? '\nガイド有' : ''}`
+                  const status = (s as any).status || '予約'
+                  const title = `${s.departureTime}→${s.returnTime} ${s.organizationName || '(未設定)'}\nステータス: ${status}\n行き先: ${s.destination || '-'}\n車両: ${s.StVehicle?.plateNumber || '不明'}${s.hasGuide ? '\nガイド有' : ''}`
                   return (
                     <div
                       key={s.id}
-                      className={`p-0.5 rounded text-[9px] truncate cursor-pointer ${s.hasGuide ? 'bg-green-500' : 'bg-blue-500'} text-white hover:opacity-80`}
+                      className={`p-0.5 rounded text-[9px] truncate cursor-pointer ${getStatusBackgroundColor(status, s.hasGuide)} text-white hover:opacity-80`}
                       title={title}
                       onClick={e => {
                         e.stopPropagation()
@@ -256,8 +308,10 @@ export const MonthlyView = ({ schedules, currentDate, setCurrentDate, holidays, 
         <div className="p-4 max-w-2xl">
           <h2 className="text-xl font-bold mb-4">スケジュール詳細 ({ScheduleDetailModal.open?.dateStr})</h2>
           <div className="space-y-4 max-h-[70vh] overflow-y-auto">
-            {ScheduleDetailModal.open?.schedules?.map(s => (
-              <div key={s.id} className="p-4 border rounded-lg shadow-sm bg-white border-l-4 border-blue-500">
+            {ScheduleDetailModal.open?.schedules?.map(s => {
+              const status = (s as any).status || '予約'
+              return (
+              <div key={s.id} className={`p-4 border rounded-lg shadow-sm bg-white ${getStatusBorderColorModal(status)}`}>
                 {/* ヘッダー: 時間、団体名、PDF */}
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
@@ -265,6 +319,9 @@ export const MonthlyView = ({ schedules, currentDate, setCurrentDate, holidays, 
                       <Clock className="w-4 h-4 text-gray-400" />
                       <span className="text-sm font-semibold text-gray-700">
                         {s.departureTime} → {s.returnTime}
+                      </span>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeColorModal(status)}`}>
+                        {status}
                       </span>
                       {s.hasGuide && (
                         <span className="inline-flex items-center px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
@@ -378,7 +435,8 @@ export const MonthlyView = ({ schedules, currentDate, setCurrentDate, holidays, 
                   </div>
                 )}
               </div>
-            ))}
+            )
+            })}
           </div>
           <div className="mt-4 flex justify-end">
             <button

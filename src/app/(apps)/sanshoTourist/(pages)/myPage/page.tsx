@@ -4,6 +4,7 @@ import { initServerComopnent } from 'src/non-common/serverSideFunction'
 import { getStHolidays } from '../../(server-actions)/holiday-actions'
 import { getStUserHolidays } from '../../(server-actions)/user-holiday-actions'
 import { getDrivers } from '../../(server-actions)/driver-actions'
+import { toUtc } from '@cm/class/Days/date-utils/calculations'
 
 // データ取得
 const getInitialData = async (userId: number) => {
@@ -19,9 +20,12 @@ const getInitialData = async (userId: number) => {
  })
 
  // 祝日マスタ（広範囲で取得）
- const today = new Date()
- const dateFrom = new Date(today.getFullYear() - 1, 0, 1)
- const dateTo = new Date(today.getFullYear() + 1, 11, 31)
+ const today = toUtc(new Date())
+ const dateFrom = toUtc(new Date(today.getFullYear() - 1, 0, 1))
+
+
+
+ const dateTo = toUtc(new Date(today.getFullYear() + 1, 11, 31))
  const holidays = await getStHolidays({
   where: {
    dateFrom,

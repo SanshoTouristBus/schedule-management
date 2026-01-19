@@ -13,13 +13,31 @@ type Props = {
   canEdit?: boolean
 }
 
+// ステータスに応じた背景色を取得
+const getStatusColor = (status: string | undefined) => {
+  switch (status) {
+    case '予約':
+      return 'bg-red-500 hover:bg-red-600'
+    case '仮予約':
+      return 'bg-blue-500 hover:bg-blue-600'
+    case '確定':
+      return 'bg-yellow-500 hover:bg-yellow-600'
+    case 'キャンセル':
+      return 'bg-gray-400 hover:bg-gray-500'
+    default:
+      return 'bg-blue-500 hover:bg-blue-600'
+  }
+}
+
 export const ScheduleBar = ({ schedule, onClick, onCopyStart, getDriverNames, isCopyMode = false, canEdit = true }: Props) => {
   const driverIds = schedule.StScheduleDriver?.map(sd => sd.userId) || []
   const driverNames = getDriverNames(driverIds)
 
   // ツールチップ用の詳細情報を構築
+  const status = (schedule as any).status || '予約'
   const tooltipLines = [
     schedule.organizationName || '(団体名未設定)',
+    `ステータス: ${status}`,
     `時間: ${schedule.departureTime} → ${schedule.returnTime}`,
     schedule.destination ? `行き先: ${schedule.destination}` : '',
     schedule.StVehicle ? `車両: ${schedule.StVehicle.plateNumber} (${schedule.StVehicle.type})` : '',
@@ -37,7 +55,7 @@ export const ScheduleBar = ({ schedule, onClick, onCopyStart, getDriverNames, is
     <div className="mx-0.5 group relative">
       <button
         onClick={onClick}
-        className="w-full h-full p-1 bg-blue-500 text-white rounded shadow-sm hover:bg-blue-600 focus:outline-none overflow-hidden text-left relative leading-tight"
+        className={`w-full h-full p-1 ${getStatusColor((schedule as any).status)} text-white rounded shadow-sm focus:outline-none overflow-hidden text-left relative leading-tight`}
         title={tooltipText}
       >
         {/* 1行目: 時間と団体名、PDFアイコン */}

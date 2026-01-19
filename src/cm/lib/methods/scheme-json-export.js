@@ -94,6 +94,7 @@ model StSchedule {
  departureTime       String? // 出庫時間 (HH:mm)
  returnTime          String? // 帰庫時間 (HH:mm)
  remarks             String? // 備考
+ status              String  @default("予約") // ステータス: 予約, 仮予約, 確定, キャンセル
 
  // 添付ファイル
  pdfFileName String? // 運行指示書ファイル名
@@ -1244,6 +1245,21 @@ export const prismaDMMF = {
           "hasDefaultValue": false,
           "type": "String",
           "nativeType": null,
+          "isGenerated": false,
+          "isUpdatedAt": false
+        },
+        {
+          "name": "status",
+          "kind": "scalar",
+          "isList": false,
+          "isRequired": true,
+          "isUnique": false,
+          "isId": false,
+          "isReadOnly": false,
+          "hasDefaultValue": true,
+          "type": "String",
+          "nativeType": null,
+          "default": "予約",
           "isGenerated": false,
           "isUpdatedAt": false
         },

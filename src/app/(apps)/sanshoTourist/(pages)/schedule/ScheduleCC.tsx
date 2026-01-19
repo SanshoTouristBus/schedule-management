@@ -166,6 +166,7 @@ export const ScheduleCC = ({ vehicles, customers, drivers, holidays, allUsers, i
           destination: data.destination,
           hasGuide: data.hasGuide,
           remarks: data.remarks,
+          status: data.status,
         })
       } else {
         // 管理者は全てのフィールドを送信
@@ -182,6 +183,7 @@ export const ScheduleCC = ({ vehicles, customers, drivers, holidays, allUsers, i
           departureTime: data.departureTime,
           returnTime: data.returnTime,
           remarks: data.remarks,
+          status: data.status,
           driverIds: data.driverIds,
         })
       }

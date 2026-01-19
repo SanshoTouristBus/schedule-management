@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useMemo, useEffect } from 'react'
-import { Calendar, Bus, Building, User, Clock, MapPin, Info, Users, Save } from 'lucide-react'
+import { Calendar, Bus, Building, User, Clock, MapPin, Info, Users, Save, Tag } from 'lucide-react'
 import { StVehicle, StCustomer, StContact } from '@prisma/generated/prisma/client'
 import { StScheduleWithRelations } from '../(server-actions)/schedule-actions'
 import { getMidnight } from '@cm/class/Days/date-utils/calculations'
@@ -54,8 +54,17 @@ export type ScheduleFormData = {
   departureTime?: string | null
   returnTime?: string | null
   remarks?: string | null
+  status?: string // ステータス: 予約, 仮予約, 確定, キャンセル
   driverIds: number[]
 }
+
+// ステータスオプション
+const statusOptions = [
+  { value: '予約', label: '予約' },
+  { value: '仮予約', label: '仮予約' },
+  { value: '確定', label: '確定' },
+  { value: 'キャンセル', label: 'キャンセル' },
+]
 
 // フォーム入力コンポーネント
 const FormInput = ({
@@ -185,6 +194,7 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
     departureTime: initialData?.departureTime || '08:00',
     returnTime: initialData?.returnTime || '17:00',
     remarks: initialData?.remarks || '',
+    status: (initialData as any)?.status || '予約',
     driverIds: initialData?.StScheduleDriver?.map(sd => sd.userId) || [],
   })
 
@@ -360,6 +370,17 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
           onChange={handleChange}
           required
           icon={<MapPin className="w-4 h-4" />}
+          disabled={!canEditAll && !canEditLimited}
+        />
+
+        <FormSelect
+          label="ステータス"
+          id="status"
+          value={formData.status || '予約'}
+          onChange={handleChange}
+          options={statusOptions}
+          required
+          icon={<Tag className="w-4 h-4" />}
           disabled={!canEditAll && !canEditLimited}
         />
 
