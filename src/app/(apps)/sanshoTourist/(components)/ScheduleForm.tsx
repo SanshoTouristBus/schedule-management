@@ -101,11 +101,10 @@ const FormInput = ({
         onChange={onChange}
         required={required}
         disabled={disabled}
-        className={`w-full px-3 py-2 border rounded-lg shadow-sm ${icon ? 'pl-10' : ''} focus:outline-none ${
-          disabled
-            ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
-            : 'border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
-        }`}
+        className={`w-full px-3 py-2 border rounded-lg shadow-sm ${icon ? 'pl-10' : ''} focus:outline-none ${disabled
+          ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
+          : 'border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+          }`}
       />
     </div>
   </div>
@@ -145,11 +144,10 @@ const FormSelect = ({
         onChange={onChange}
         required={required}
         disabled={disabled}
-        className={`w-full px-3 py-2 border rounded-lg shadow-sm ${icon ? 'pl-10' : ''} focus:outline-none appearance-none ${
-          disabled
-            ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
-            : 'border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
-        }`}
+        className={`w-full px-3 py-2 border rounded-lg shadow-sm ${icon ? 'pl-10' : ''} focus:outline-none appearance-none ${disabled
+          ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
+          : 'border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+          }`}
       >
         <option value="">--- 選択してください ---</option>
         {options.map(opt => (
@@ -174,12 +172,19 @@ const FormCard = ({ title, icon, children }: { title: string; icon: React.ReactN
 )
 
 export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave, onClose, isSystemAdmin, isEditor, isViewer }: Props) => {
+
+
   // 権限に応じた編集可能フィールドの判定
   // 管理者: 全て編集可能
-  // 編集者: 顧客選択、団体名、担当者、行き先、ガイドの有無、備考のみ編集可能
-  // 閲覧者: 全て閲覧のみ
-  const canEditAll = isSystemAdmin
+  const isNewRecord = !initialData?.id
+
+  const canEditAll = isSystemAdmin || (isNewRecord && isEditor)
+  // 編集者: 新規作成・既存編集ともに一部フィールドのみ編集可能
+  // （団体名、担当者名、行先、ステータス、乗務員、ガイド有無、備考）
   const canEditLimited = isEditor && !isSystemAdmin
+
+
+  // 閲覧者: 全て閲覧のみ
   const isReadOnly = isViewer && !isSystemAdmin && !isEditor
   const [formData, setFormData] = useState<ScheduleFormData>({
     id: initialData?.id,
@@ -270,8 +275,16 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
     }
   }
 
+
+
+
+
+
+
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {isNewRecord && <div className="text-lg bg-red-500 p-2 text-white mb-4">新規作成モード</div>}
       <FormCard title="基本情報" icon={<Calendar className="w-5 h-5" />}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
           <FormInput
@@ -328,7 +341,7 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
             onChange={e => setFormData(prev => ({ ...prev, stCustomerId: parseInt(e.target.value) || undefined }))}
             options={customers.map(c => ({ value: c.id, label: c.name }))}
             icon={<Building className="w-4 h-4" />}
-            disabled={!canEditAll && !canEditLimited}
+            disabled={!canEditAll}
           />
           <FormSelect
             label="顧客 (担当者)"
@@ -336,7 +349,7 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
             value={formData.stContactId || ''}
             onChange={e => setFormData(prev => ({ ...prev, stContactId: parseInt(e.target.value) || undefined }))}
             options={availableContacts.map(c => ({ value: c.id, label: c.name }))}
-            disabled={!formData.stCustomerId || (!canEditAll && !canEditLimited)}
+            disabled={!formData.stCustomerId || !canEditAll}
             icon={<User className="w-4 h-4" />}
           />
         </div>
@@ -385,9 +398,9 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
         />
 
         <div className="mb-4">
-          <label htmlFor="driverIds" className={`block text-sm font-medium mb-1 ${!canEditAll ? 'text-gray-500' : 'text-gray-700'}`}>
+          <label htmlFor="driverIds" className={`block text-sm font-medium mb-1 ${!canEditAll && !canEditLimited ? 'text-gray-500' : 'text-gray-700'}`}>
             乗務員 <span className="text-red-500">*</span>
-            {!canEditAll && <span className="ml-2 text-xs text-gray-400 font-normal">(閲覧のみ)</span>}
+            {!canEditAll && !canEditLimited && <span className="ml-2 text-xs text-gray-400 font-normal">(閲覧のみ)</span>}
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
@@ -400,12 +413,11 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
               value={formData.driverIds.map(String)}
               onChange={handleDriverChange}
               required
-              disabled={!canEditAll}
-              className={`w-full px-3 py-2 border rounded-lg shadow-sm pl-10 focus:outline-none h-24 ${
-                !canEditAll
-                  ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
-                  : 'border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
-              }`}
+              disabled={!canEditAll && !canEditLimited}
+              className={`w-full px-3 py-2 border rounded-lg shadow-sm pl-10 focus:outline-none h-24 ${!canEditAll && !canEditLimited
+                ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
+                : 'border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+                }`}
             >
               {drivers.map(d => (
                 <option key={d.id} value={d.id}>
@@ -445,11 +457,10 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
             onChange={handleChange}
             rows={3}
             disabled={!canEditAll && !canEditLimited}
-            className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none ${
-              !canEditAll && !canEditLimited
-                ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
-                : 'border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
-            }`}
+            className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none ${!canEditAll && !canEditLimited
+              ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
+              : 'border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+              }`}
           />
         </div>
       </FormCard>

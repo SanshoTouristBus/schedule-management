@@ -20,6 +20,7 @@ type Props = {
   onCopyStart: (schedule: StScheduleWithRelations) => void
   canEdit: boolean
   isSystemAdmin: boolean
+  isEditor: boolean
 }
 
 // 日付操作ユーティリティ
@@ -67,6 +68,7 @@ export const ScheduleGridBody = ({
   onCopyStart,
   canEdit,
   isSystemAdmin,
+  isEditor,
 }: Props) => {
   const isCopyMode = !!copySource
 
@@ -140,7 +142,7 @@ export const ScheduleGridBody = ({
                     const target = e.target as HTMLElement
                     if (target.classList.contains('border-r') || target === e.currentTarget) {
                       // ローカル日付からDateオブジェクトを作成
-                      if (isSystemAdmin) {
+                      if (isSystemAdmin || isEditor) {
                         onNewSchedule(parseLocalDate(dateStr), v.id)
                       }
                     }

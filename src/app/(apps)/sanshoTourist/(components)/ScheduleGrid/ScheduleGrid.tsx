@@ -24,6 +24,7 @@ type Props = {
   onCopyStart: (schedule: StScheduleWithRelations) => void
   canEdit: boolean
   isSystemAdmin: boolean
+  isEditor: boolean
 }
 
 export const ScheduleGrid = ({
@@ -44,6 +45,7 @@ export const ScheduleGrid = ({
   onCopyStart,
   canEdit,
   isSystemAdmin,
+  isEditor,
 }: Props) => {
   return (
     <div className="overflow-x-auto border border-gray-300 rounded-lg shadow-md bg-gray-50 relative">
@@ -70,6 +72,7 @@ export const ScheduleGrid = ({
         onCopyStart={onCopyStart}
         canEdit={canEdit}
         isSystemAdmin={isSystemAdmin}
+        isEditor={isEditor}
       />
     </div>
   )

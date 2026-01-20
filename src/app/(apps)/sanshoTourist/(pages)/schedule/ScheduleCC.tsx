@@ -135,9 +135,9 @@ export const ScheduleCC = ({ vehicles, customers, drivers, holidays, allUsers, i
     ScheduleModalReturn.handleOpen({ schedule })
   }
 
-  // 新規スケジュール（管理者のみ、編集者は既存データの編集のみ）
+  // 新規スケジュール（編集権限があれば作成可能）
   const handleNewSchedule = (date: Date, vehicleId: number) => {
-    if (!isSystemAdmin) return // 管理者のみ新規作成可能
+    if (!canEdit) return // 編集権限があれば新規作成可能
     ScheduleModalReturn.handleOpen({
       schedule: {
         date,
@@ -149,25 +149,37 @@ export const ScheduleCC = ({ vehicles, customers, drivers, holidays, allUsers, i
   // スケジュール保存
   const handleSaveSchedule = async (data: ScheduleFormData) => {
     await toggleLoad(async () => {
-      // 編集者の場合、編集可能なフィールドのみを送信
+      // 編集者の場合: 新規・既存ともに編集可能フィールドのみ送信
+      // （団体名、担当者、行き先、ガイドの有無、備考、ステータス、乗務員）
       if (isEditor && !isSystemAdmin) {
-        // 編集者が編集可能なフィールド: 顧客選択、団体名、担当者、行き先、ガイドの有無、備考
-        // 編集者は既存データの編集のみ（新規作成は管理者のみ）
         if (!data.id) {
-          throw new Error('編集者は新規作成できません')
+          // 新規作成: 運行日・車両は自動設定値を使用
+          await upsertStSchedule({
+            id: data.id,
+            date: data.date,
+            stVehicleId: data.stVehicleId,
+            organizationName: data.organizationName,
+            organizationContact: data.organizationContact,
+            destination: data.destination,
+            hasGuide: data.hasGuide,
+            remarks: data.remarks,
+            status: data.status,
+            driverIds: data.driverIds,
+          })
+        } else {
+          // 既存編集: 編集可能フィールドのみ送信
+          await upsertStSchedule({
+            id: data.id,
+            date: data.date,
+            organizationName: data.organizationName,
+            organizationContact: data.organizationContact,
+            destination: data.destination,
+            hasGuide: data.hasGuide,
+            remarks: data.remarks,
+            status: data.status,
+            driverIds: data.driverIds,
+          })
         }
-        await upsertStSchedule({
-          id: data.id,
-          date: data.date,
-          stCustomerId: data.stCustomerId,
-          stContactId: data.stContactId,
-          organizationName: data.organizationName,
-          organizationContact: data.organizationContact,
-          destination: data.destination,
-          hasGuide: data.hasGuide,
-          remarks: data.remarks,
-          status: data.status,
-        })
       } else {
         // 管理者は全てのフィールドを送信
         await upsertStSchedule({
@@ -265,6 +277,10 @@ export const ScheduleCC = ({ vehicles, customers, drivers, holidays, allUsers, i
     handleCopyCancel()
   }
 
+
+
+
+
   return (
     <div>
       {/* ヘッダー (月切り替え) */}
@@ -309,9 +325,13 @@ export const ScheduleCC = ({ vehicles, customers, drivers, holidays, allUsers, i
               <Plus className="w-5 h-5 mr-1" /> 新規作成
             </button>
           ) : isEditor ? (
-            <span className="px-4 py-2 rounded-lg bg-blue-200 text-blue-700 text-sm">
-              編集モード（一部フィールドのみ編集可能）
-            </span>
+            <button
+              onClick={() => ScheduleModalReturn.handleOpen({ schedule: undefined })}
+              className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center"
+              disabled={!!copySource}
+            >
+              <Plus className="w-5 h-5 mr-1" /> 新規作成
+            </button>
           ) : (
             <span className="px-4 py-2 rounded-lg bg-gray-200 text-gray-500 text-sm">
               閲覧モード
@@ -339,6 +359,7 @@ export const ScheduleCC = ({ vehicles, customers, drivers, holidays, allUsers, i
         onCopyStart={handleCopyStart}
         canEdit={canEdit}
         isSystemAdmin={isSystemAdmin}
+        isEditor={isEditor}
       />
 
       {/* コピーモードコントローラー */}
