@@ -15,6 +15,7 @@ import {
   getStSchedules,
   upsertStSchedule,
   createStSchedulesBatch,
+  deleteStSchedule,
   StScheduleWithRelations,
 } from '../../(server-actions)/schedule-actions'
 import { getStRollCallers, upsertStRollCaller } from '../../(server-actions)/rollcaller-actions'
@@ -204,6 +205,15 @@ export const ScheduleCC = ({ vehicles, customers, drivers, holidays, allUsers, i
     ScheduleModalReturn.handleClose()
   }
 
+  // スケジュール削除（管理者のみ）
+  const handleDeleteSchedule = async (id: number) => {
+    await toggleLoad(async () => {
+      await deleteStSchedule(id)
+      await mutateSchedules()
+    })
+    ScheduleModalReturn.handleClose()
+  }
+
   // 点呼者更新（編集権限がある場合のみ）
   const handleUpdateRollCaller = async (date: Date, userId: number) => {
     if (!canEdit) return
@@ -382,6 +392,7 @@ export const ScheduleCC = ({ vehicles, customers, drivers, holidays, allUsers, i
             customers={customers}
             drivers={drivers}
             onSave={handleSaveSchedule}
+            onDelete={handleDeleteSchedule}
             onClose={() => ScheduleModalReturn.handleClose()}
             isSystemAdmin={isSystemAdmin}
             isEditor={isEditor}

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useMemo, useEffect } from 'react'
-import { Calendar, Bus, Building, User, Clock, MapPin, Info, Users, Save, Tag } from 'lucide-react'
+import { Calendar, Bus, Building, User, Clock, MapPin, Info, Users, Save, Tag, Trash2 } from 'lucide-react'
 import { StVehicle, StCustomer, StContact } from '@prisma/generated/prisma/client'
 import { StScheduleWithRelations } from '../(server-actions)/schedule-actions'
 import { getMidnight } from '@cm/class/Days/date-utils/calculations'
@@ -35,6 +35,7 @@ type Props = {
   customers: (StCustomer & { StContact: StContact[] })[]
   drivers: { id: number; name: string }[]
   onSave: (data: ScheduleFormData) => Promise<void>
+  onDelete?: (id: number) => Promise<void>
   onClose: () => void
   isSystemAdmin: boolean
   isEditor: boolean
@@ -171,7 +172,7 @@ const FormCard = ({ title, icon, children }: { title: string; icon: React.ReactN
   </div>
 )
 
-export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave, onClose, isSystemAdmin, isEditor, isViewer }: Props) => {
+export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave, onDelete, onClose, isSystemAdmin, isEditor, isViewer }: Props) => {
 
 
   // 権限に応じた編集可能フィールドの判定
@@ -204,6 +205,7 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   // 選択した会社の担当者リスト
   const availableContacts = useMemo(() => {
@@ -465,20 +467,48 @@ export const ScheduleForm = ({ initialData, vehicles, customers, drivers, onSave
         </div>
       </FormCard>
 
-      <div className="flex justify-end space-x-2 pt-4">
-        <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300">
-          キャンセル
-        </button>
-        {!isReadOnly && (
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 flex items-center disabled:opacity-50"
-          >
-            <Save className="w-4 h-4 mr-2" />
-            {isSubmitting ? '保存中...' : '保存'}
+      <div className="flex justify-between pt-4">
+        <div>
+          {!isNewRecord && canEditAll && onDelete && initialData?.id && (
+            <button
+              type="button"
+              disabled={isDeleting}
+              onClick={async () => {
+                if (confirm('このスケジュールを削除しますか？')) {
+                  if (confirm('この処理は元に戻すことはできません。削除してもよろしいですか？')) {
+                    setIsDeleting(true)
+                    try {
+                      await onDelete(initialData.id!)
+                    } finally {
+                      setIsDeleting(false)
+                    }
+                  }
+                }
+
+
+              }}
+              className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 flex items-center disabled:opacity-50"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              {isDeleting ? '削除中...' : '削除'}
+            </button>
+          )}
+        </div>
+        <div className="flex space-x-2">
+          <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300">
+            キャンセル
           </button>
-        )}
+          {!isReadOnly && (
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 flex items-center disabled:opacity-50"
+            >
+              <Save className="w-4 h-4 mr-2" />
+              {isSubmitting ? '保存中...' : '保存'}
+            </button>
+          )}
+        </div>
       </div>
     </form>
   )
